@@ -201,6 +201,21 @@ code {
   background-color: $red;
 }
 
+.staging-back-area {
+  @extend %card-area;
+  background-color: $darkorange;
+}
+
+.passed-staging-back-area {
+  @extend %card-area;
+  background-color: $darkgrey;
+}
+
+.current-staging-back-area {
+  @extend %card-area;
+  background-color: $red;
+}
+
 .hand {
   @extend %hand;
   background-color: $darkorange;

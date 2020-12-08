@@ -1,18 +1,20 @@
 // src/TienLen.js
 
 import { PlayerView, Stage } from "boardgame.io/core";
-import { Suits, Ranks, Combinations } from "./constants";
+import { Suits, Ranks, /*Combinations*/ } from "./constants";
 import { cardsToCenter, passTurn, tienLenPlay } from "./moves/cardPlayMoves";
-import { relocateCards, clearStagingArea } from "./moves/cardAreaMoves";
+import { relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea } from "./moves/cardAreaMoves";
 import { compareCards } from "./moves/helper-functions/cardComparison";
 const _ = require("lodash");
 
 const TienLen = {
-  name: "tien-len",
+  name: "Beulah",
   setup: setUp,
   moves: {
     relocateCards: relocateCards,
+    relocateMiddleCards: relocateMiddleCards,
     clearStagingArea: clearStagingArea,
+    fillStagingArea: fillStagingArea,
     cardsToCenter: cardsToCenter,
     passTurn: passTurn,
     tienLenPlay: tienLenPlay,
@@ -20,7 +22,7 @@ const TienLen = {
   stages: {
     tienLen: { moves: { tienLenPlay } },
     notTurn: {
-      moves: { relocateCards, clearStagingArea },
+      moves: { relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea },
     },
   },
   turn: {
@@ -41,6 +43,8 @@ const TienLen = {
       return { winners: w };
     }
   },
+  minPlayers: 1,
+  maxPlayers: 9,
 };
 
 function setUp(ctx) {
@@ -51,33 +55,45 @@ function setUp(ctx) {
     }
   }
 
-  const n = ctx.random.Die(4);
-  for (let i = 1 + n; i > 0; i--) {
+  //const n = ctx.random.Die(ctx.numPlayers);
+  for (let i = 10; i > 0; i--) {
     deck = ctx.random.Shuffle(deck);
   }
-  const chunkedDeck = _.chunk(deck, 13).map(x => x.sort(compareCards));
+  const chunkedDeck = _.chunk(deck, 5).map(x => x.sort(compareCards));
+
+  let centerCards = chunkedDeck[0];
 
   const players = {};
 
   let firstPlayer;
-  for (let i = 0; i < 4; i++) {
-    if (_.find(chunkedDeck[i], { rank: "3", suit: "S" })) {
-      firstPlayer = i;
-    }
-    players[i] = {
+  for (let i = 1; i <= ctx.numPlayers; i++) {
+    //if (_.find(chunkedDeck[i], { rank: "3", suit: "S" })) {
+    firstPlayer = 0// i;
+    //}
+    players[i-1] = {
       hand: chunkedDeck[i],
       stagingArea: [],
+      stagingBackArea: [],
     };
+  }
+  console.log(ctx.numPlayers);
+
+  const cardsLeftFunc = () => {
+    let returnCardsLeft = {};
+    for (let num of [...Array(ctx.numPlayers).keys()]) {
+      returnCardsLeft[num] = 5;
+    }
+    return returnCardsLeft;
   }
 
   return {
-    turnOrder: [0, 1, 2, 3],
-    center: [],
+    turnOrder: [...Array(ctx.numPlayers).keys()],
+    center: centerCards,
     players: players,
-    roundType: Combinations.ANY,
+    roundType: "Opening Round",
     winners: [],
     firstPlayer: firstPlayer,
-    cardsLeft: { 0: 13, 1: 13, 2: 13, 3: 13 },
+    cardsLeft: cardsLeftFunc(),
   };
 }
 

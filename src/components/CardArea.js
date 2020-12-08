@@ -9,22 +9,24 @@ export default function CardArea({
   className,
   listName,
   setList,
-  disabled,
+  group,
+  roundType
 }) {
+  let x = (group=="center" && roundType=="Opening Round");
   return (
     <ReactSortable
       multiDrag={false}
-      group={"shared"}
+      group={group}
       dragoverBubble={true}
       selectedClass={"selected-card"}
       list={cards}
       setList={newCards => setList(newCards, listName)}
       className={className}
       ghostClass={"ghost-card"}
-      disabled={disabled}
+      disabled={false}
     >
       {cards.map(card => (
-        <Card rank={card.rank} suit={card.suit} key={card.rank + card.suit} />
+        <Card rank={card.rank} suit={card.suit} key={card.rank + card.suit} concealed={x} />
       ))}
     </ReactSortable>
   );
@@ -34,6 +36,7 @@ CardArea.propTypes = {
   cards: PropTypes.array,
   className: PropTypes.string,
   setList: PropTypes.func,
-  disabled: PropTypes.bool,
+  group: PropTypes.string,
   listName: PropTypes.string,
+  roundType: PropTypes.string
 };

@@ -17,7 +17,8 @@ import "./lobby.scss";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-GameTienLen.minPlayers = GameTienLen.maxPlayers = 4;
+GameTienLen.minPlayers = 1;
+GameTienLen.maxPlayers = 9;// ERIC. change back to 4
 
 const { protocol, hostname, port } = window.location;
 
@@ -32,13 +33,13 @@ const importedGames = [{ game: GameTienLen, board: BoardTienLen }];
 
 function LobbyView() {
   return (
-    <div style={{ padding: 50 }}>
+    <div style={{ padding: 0 }}>
       <Router>
         <div className="center-container">
-          <button className="tien-len">
-            <Link to="/">Tiến Lên</Link>
+          <button className="Beulah">
+            <Link to="/">Beulah</Link>
           </button>
-          <button className="tien-len">
+          <button className="Beulah">
             <Link to="/rules">Rules</Link>
           </button>
         </div>
@@ -46,7 +47,7 @@ function LobbyView() {
           <Route exact path="/">
             <div>
               {" "}
-              <h1>Tiến Lên</h1>
+              <h1>Beulah</h1>
               <Lobby
                 gameServer={gameServer}
                 lobbyServer={lobbyServer}

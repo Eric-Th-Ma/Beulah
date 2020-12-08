@@ -34,8 +34,21 @@ export default class PlayerArea extends Component {
               className={getClassName(
                 this.props,
                 this.props.playerID,
+                "staging-back-area"
+              )}
+              group="center"
+              roundType={this.props.G.roundType}
+              listName="stagingBackArea"
+              cards={this.props.G.players[playerID].stagingBackArea}
+              setList={this.props.moves.relocateCards}
+            />
+            <CardArea
+              className={getClassName(
+                this.props,
+                this.props.playerID,
                 "staging-area"
               )}
+              group="hand"
               listName="stagingArea"
               cards={this.props.G.players[playerID].stagingArea}
               setList={this.props.moves.relocateCards}
@@ -52,6 +65,7 @@ export default class PlayerArea extends Component {
             <CardArea
               className={getClassName(this.props, playerID, "hand")}
               listName="hand"
+              group="hand"
               cards={this.props.G.players[playerID].hand}
               setList={this.props.moves.relocateCards}
             />

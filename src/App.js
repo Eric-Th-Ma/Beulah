@@ -16,7 +16,7 @@ let server = APP_PRODUCTION
 
 const App = Client({
   game: TienLen,
-  numPlayers: 4,
+  //numPlayers: 2, // ERIC. change back to 4
   board: TienLenBoard,
   multiplayer: SocketIO({ server }),
   debug: { impl: Debug },

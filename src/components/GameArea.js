@@ -1,16 +1,17 @@
 // src/components/GameArea.js
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { getClassName } from "./_helperFunctions";
+//import { getClassName } from "./_helperFunctions";
 import CardArea from "./CardArea";
-import PlayerStatus from "./PlayerStatus";
+//import PlayerStatus from "./PlayerStatus";
 
 export default class GameArea extends Component {
   render() {
-    const playerID = this.props.playerID;
-    const pID = playerID ? parseInt(playerID) : 0;
+    //const playerID = this.props.playerID;
+    //const pID = playerID ? parseInt(playerID) : 0;
     let gameArea = [];
     let centerRow = [];
+    /*
     for (let i of [2, 3, "center", 1, 0]) {
       if (i === "center") {
         const center = this.props.ctx.gameover ? (
@@ -19,19 +20,20 @@ export default class GameArea extends Component {
           </div>
         ) : (
           <div key="center" className="round-type">
-            {this.props.G.roundType}
+            {this.props.G.roundType=="Opening Round" ? this.props.G.roundType : null}
             <CardArea
               className="center"
+              group="center"
               cards={this.props.G.center}
-              onClick={() => null}
-              setList={() => null}
-              disabled={true}
+              listName="centerCards"
+              setList={this.props.moves.relocateMiddleCards}
+              roundType={this.props.G.roundType}
             />
           </div>
         );
         centerRow.push(center);
       } else {
-        const index = (i + pID) % 4;
+        const index = (i + pID) % this.props.ctx.numPlayers;
         const indexString = index.toString();
         const playerStatusClassName = getClassName(
           this.props,
@@ -60,16 +62,34 @@ export default class GameArea extends Component {
               />
             </div>
           );
-          if (i === 1) {
+          if (i === 1) {*/
+            const center = this.props.ctx.gameover ? (
+              <div key="center" className="round-type">
+                Game Over!
+              </div>
+            ) : (
+              <div key="center" className="round-type">
+                {this.props.G.roundType=="Opening Round" ? this.props.G.roundType : null}
+                <CardArea
+                  className="center"
+                  group="center"
+                  cards={this.props.G.center}
+                  listName="centerCards"
+                  setList={this.props.moves.relocateMiddleCards}
+                  roundType={this.props.G.roundType}
+                />
+              </div>
+            );
+            centerRow.push(center);
             gameArea.push(
               <div key="centerRow" className="center-row">
                 {centerRow}
               </div>
-            );
+            );/*
           }
         }
       }
-    }
+    }*/
     return <div className="game-area">{gameArea}</div>;
   }
 }
@@ -77,5 +97,6 @@ export default class GameArea extends Component {
 GameArea.propTypes = {
   G: PropTypes.object,
   ctx: PropTypes.object,
+  moves: PropTypes.object,
   playerID: PropTypes.string,
 };

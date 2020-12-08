@@ -5,22 +5,15 @@ import {
   validChop,
   compareHighest,
 } from "./helper-functions/cardComparison";
-const _ = require("lodash");
+//const _ = require("lodash");
 
-export function validPlay(stagingArea, roundType, center, threeSpadesInHand) {
-  const handType = validCombination(stagingArea);
-  if (stagingArea.length === 0 || handType === undefined) {
-    return "Invalid Combination";
-  } else if (threeSpadesInHand) {
-    return "First Play Must Include 3♠";
-  } else if (roundType === Combinations.ANY || validChop(center, stagingArea)) {
+export function validPlay(stagingArea, stagingBackArea, roundType) {
+  if ((stagingBackArea.length === 1 && stagingArea.length === 1 && roundType!=="Opening Round") || (stagingBackArea.length === 5 && stagingArea.length === 5)) {
     return true;
-  } else if (roundType !== handType || stagingArea.length !== center.length) {
-    return "Does Not Match Center";
-  } else if (compareHighest(stagingArea, center) !== 1) {
-    return "Does Not Beat Center";
+  } else if (roundType == "Opening Round") {
+    return "Take them all or pass";
   } else {
-    return true;
+    return "Swap 1 for 1 or 5 for 5";
   }
 }
 
@@ -47,30 +40,36 @@ export function tienLenPlay(G, ctx) {
 
 export function cardsToCenter(G, ctx) {
   const currentPlayer = ctx.currentPlayer;
+  let stagingBackArea = G.players[currentPlayer].stagingBackArea;
   let stagingArea = G.players[currentPlayer].stagingArea;
   G.roundType = validCombination(stagingArea);
 
-  G.center = _.cloneDeep(stagingArea);
+  G.center = G.center.concat(stagingArea);
+  G.players[currentPlayer].hand = G.players[currentPlayer].hand.concat(stagingBackArea);
+  G.players[currentPlayer].stagingBackArea = [];
   G.players[currentPlayer].stagingArea = [];
-  G.cardsLeft[currentPlayer] -= G.center.length;
-  if (G.cardsLeft[currentPlayer] === 0) {
+  //G.cardsLeft[currentPlayer] -= G.center.length;
+  /*if (G.cardsLeft[currentPlayer] === 0) {
     // won the game
     G.winners.push(currentPlayer);
     // get rid of any existing winner markers
     G.turnOrder = G.turnOrder.map(x => (x === "W" ? null : x));
     G.turnOrder[parseInt(ctx.currentPlayer)] = "W";
-  }
+  }*/
   nextTurn(G, ctx);
 }
 
 export function passTurn(G, ctx) {
-  G.turnOrder[parseInt(ctx.currentPlayer)] = null;
+  //G.turnOrder[parseInt(ctx.currentPlayer)] = null;
   nextTurn(G, ctx);
 }
 
 function nextTurn(G, ctx) {
   let currentPlayer = parseInt(ctx.currentPlayer);
   let nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
+  if (nextPlayer == 0) {
+    G.roundType=""
+  }
   let removeNulls = G.turnOrder.filter(x => x !== null);
   if (nextPlayer === "W" && removeNulls.length !== 1) {
     // next player has already won, more players left in turn order
@@ -105,7 +104,7 @@ function nextTurn(G, ctx) {
 
 function findNextPlayer(turnOrder, currentPlayer) {
   let playerList = turnOrder
-    .slice(currentPlayer + 1, 4)
+    .slice(currentPlayer + 1, turnOrder.length)
     .concat(turnOrder.slice(0, currentPlayer + 1));
   return playerList.find(i => i !== null).toString();
 }

@@ -10,6 +10,9 @@ export function compareCards(card1, card2) {
   */
 
   // compare by ranks first
+  if (card1.rank == "1" || card2.rank == "1") {
+    return 0;
+  }
   let rank1Position = Ranks.indexOf(card1.rank);
   let rank2Position = Ranks.indexOf(card2.rank);
   if (rank1Position > rank2Position) {
