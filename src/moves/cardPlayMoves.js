@@ -42,7 +42,6 @@ export function cardsToCenter(G, ctx) {
   const currentPlayer = ctx.currentPlayer;
   let stagingBackArea = G.players[currentPlayer].stagingBackArea;
   let stagingArea = G.players[currentPlayer].stagingArea;
-  G.roundType = validCombination(stagingArea);
 
   G.center = G.center.concat(stagingArea);
   G.players[currentPlayer].hand = G.players[currentPlayer].hand.concat(stagingBackArea);

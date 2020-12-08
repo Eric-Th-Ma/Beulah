@@ -63,13 +63,17 @@ export default class GameArea extends Component {
             </div>
           );
           if (i === 1) {*/
-            const center = this.props.ctx.gameover ? (
+            const center = /*this.props.ctx.gameover ? (
               <div key="center" className="round-type">
                 Game Over!
               </div>
-            ) : (
+            ) :*/ (
               <div key="center" className="round-type">
                 {this.props.G.roundType=="Opening Round" ? this.props.G.roundType : null}
+                {this.props.gameMetadata.map(playerData => 
+                  playerData.id==this.props.ctx.currentPlayer ? 
+                  <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
+                  null)}
                 <CardArea
                   className="center"
                   group="center"
@@ -99,4 +103,5 @@ GameArea.propTypes = {
   ctx: PropTypes.object,
   moves: PropTypes.object,
   playerID: PropTypes.string,
+  gameMetadata: PropTypes.array,
 };

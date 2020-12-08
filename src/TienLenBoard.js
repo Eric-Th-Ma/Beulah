@@ -22,6 +22,7 @@ TienLenBoard.propTypes = {
   ctx: PropTypes.object,
   moves: PropTypes.object,
   playerID: PropTypes.string,
+  gameMetadata: PropTypes.array,
 };
 
 export default TienLenBoard;
