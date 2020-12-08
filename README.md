@@ -1,3 +1,11 @@
+Personal project for running the card game Beulah
+
+## CREDIT
+
+Most of this code was taken and addapted from a project for a different card game that can be found [here](https://github.com/nguyenank/tien-len).
+
+The playing cards are by Adrian Kennard and can be found (and customised) [here](https://www.me.uk/cards/).
+
 ## Available Scripts
 
 In the project directory, you can run:
