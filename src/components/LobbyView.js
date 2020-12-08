@@ -61,7 +61,7 @@ function LobbyView() {
         </Switch>
       </Router>
       <GithubCorner
-        href="https://github.com/nguyenank/tien-len"
+        href="https://github.com/Eric-Th-Ma/Beulah"
         octoColor="#f7f3dc"
         bannerColor="#bd4a39"
       />

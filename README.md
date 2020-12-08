@@ -30,6 +30,6 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 Lint and format code respectively.
 
-## CREDIT
+## Deployment
 
-The playing cards are by Adrian Kennard and can be found (and customised) [here](https://www.me.uk/cards/).
+To deploy any modifications. First change `APP_PRODUCTION` to `true`, then commit all changes and run `git push heroku main`. Changes will be deployed [here](https://beulah-game.herokuapp.com/)
