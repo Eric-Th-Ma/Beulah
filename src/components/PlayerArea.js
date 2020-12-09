@@ -24,6 +24,7 @@ export default function PlayerArea(props) {
           listName="stagingBackArea"
           cards={props.G.players[playerID].stagingBackArea}
           setList={props.moves.relocateCards}
+          clickSwap={props.moves.clickSwap}
         />
         {wide ?
           <CardArea
@@ -36,6 +37,7 @@ export default function PlayerArea(props) {
             listName="stagingArea"
             cards={props.G.players[playerID].stagingArea}
             setList={props.moves.relocateCards}
+            clickSwap={props.moves.clickSwap}
           /> : null
         }
       </div>
@@ -53,6 +55,7 @@ export default function PlayerArea(props) {
             listName="stagingArea"
             cards={props.G.players[playerID].stagingArea}
             setList={props.moves.relocateCards}
+            clickSwap={props.moves.clickSwap}
           />
         </div>
       );
@@ -70,6 +73,7 @@ export default function PlayerArea(props) {
           group="hand"
           cards={props.G.players[playerID].hand}
           setList={props.moves.relocateCards}
+          clickSwap={props.moves.clickSwap}
         />
       </div>
     );

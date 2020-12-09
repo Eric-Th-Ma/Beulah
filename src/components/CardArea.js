@@ -10,7 +10,8 @@ export default function CardArea({
   listName,
   setList,
   group,
-  roundType
+  roundType,
+  clickSwap
 }) {
   let x = (group=="center" && roundType=="Opening Round");
   return (
@@ -26,7 +27,7 @@ export default function CardArea({
       disabled={false}
     >
       {cards.map(card => (
-        <Card rank={card.rank} suit={card.suit} key={card.rank + card.suit} concealed={x} />
+        <Card rank={card.rank} suit={card.suit} key={card.rank + card.suit} concealed={x} clickSwap={() => clickSwap(card, listName, group)}/>
       ))}
     </ReactSortable>
   );
@@ -38,5 +39,6 @@ CardArea.propTypes = {
   setList: PropTypes.func,
   group: PropTypes.string,
   listName: PropTypes.string,
-  roundType: PropTypes.string
+  roundType: PropTypes.string,
+  clickSwap: PropTypes.func,
 };

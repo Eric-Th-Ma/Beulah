@@ -81,6 +81,7 @@ export default class GameArea extends Component {
                   listName="centerCards"
                   setList={this.props.moves.relocateMiddleCards}
                   roundType={this.props.G.roundType}
+                  clickSwap={this.props.moves.clickSwap}
                 />
               </div>
             );

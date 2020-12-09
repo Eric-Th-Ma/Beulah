@@ -3,7 +3,7 @@
 import { PlayerView, Stage } from "boardgame.io/core";
 import { Suits, Ranks, /*Combinations*/ } from "./constants";
 import { cardsToCenter, passTurn, tienLenPlay } from "./moves/cardPlayMoves";
-import { relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea } from "./moves/cardAreaMoves";
+import { clickSwap, relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea } from "./moves/cardAreaMoves";
 import { compareCards } from "./moves/helper-functions/cardComparison";
 const _ = require("lodash");
 
@@ -12,6 +12,7 @@ const TienLen = {
   setup: setUp,
   moves: {
     relocateCards: relocateCards,
+    clickSwap: clickSwap,
     relocateMiddleCards: relocateMiddleCards,
     clearStagingArea: clearStagingArea,
     fillStagingArea: fillStagingArea,
@@ -22,7 +23,7 @@ const TienLen = {
   stages: {
     tienLen: { moves: { tienLenPlay } },
     notTurn: {
-      moves: { relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea },
+      moves: { relocateCards, clickSwap, relocateMiddleCards, clearStagingArea, fillStagingArea },
     },
   },
   turn: {
@@ -76,7 +77,6 @@ function setUp(ctx) {
       stagingBackArea: [],
     };
   }
-  console.log(ctx.numPlayers);
 
   const cardsLeftFunc = () => {
     let returnCardsLeft = {};
