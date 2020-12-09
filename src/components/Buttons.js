@@ -1,34 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  validCombination,
-  validChop,
-  compareHighest,
-} from "../moves/helper-functions/cardComparison";
 import { validPlay } from "../moves/cardPlayMoves";
 
 //const _ = require("lodash");
 
 export default function Buttons(props) {
   const currentPlayer = props.ctx.currentPlayer === props.playerID;
-  const tienLen =
-    props.ctx.activePlayers[props.ctx.currentPlayer] === "Beulah";
-  let buttons = [];
+  let buttons1 = [];
+  let buttons2 = [];
+  let allButtons = []
 
-  buttons.push(clearStagingAreaButton(props));
+  buttons1.push(clearStagingAreaButton(props));
+  buttons1.push(fillStagingAreaButton(props));
 
-  if (currentPlayer && tienLen) {
-    buttons.push(tienLenButton(props));
-  } else {
-    buttons.push(playCardsButton(props));
-    if (currentPlayer && !tienLen) {
-      buttons.push(passTurnButton(props));
-    }
+  buttons2.push(playCardsButton(props));
+  if (currentPlayer) {
+    buttons2.push(passTurnButton(props));
+    buttons2.push(knockButton(props));
   }
-  buttons.push(fillStagingAreaButton(props));
+
+  allButtons.push(<div className="center-container" key="buttons1">
+    {buttons1}
+  </div>);
+  allButtons.push(<div className="center-container" key="buttons2">
+    {buttons2}
+  </div>);
   return (
-    <div className="center-container" key="buttons">
-      {buttons}
+    <div>
+      {allButtons}
     </div>
   );
 }
@@ -40,7 +39,7 @@ function clearStagingAreaButton(props) {
       key="clearStagingArea"
       onClick={() => props.moves.clearStagingArea()}
     >
-      Clear Staging Areas
+      Clear Swap Area
     </button>
   );
 }
@@ -53,40 +52,6 @@ function fillStagingAreaButton(props) {
       onClick={() => props.moves.fillStagingArea()}
     >
       Swap All Cards
-    </button>
-  );
-}
-function tienLenButton(props) {
-  let stagingArea = props.G.players[props.playerID].stagingArea;
-  const handType = validCombination(stagingArea);
-  let classList;
-  let text = "Beulah - ";
-  const invalidPlay =
-    stagingArea.length === 0 || validCombination(stagingArea) === undefined;
-  if (invalidPlay) {
-    text += "Invalid Combination";
-    classList = "disabled";
-  } else if (validChop(props.G.center, stagingArea)) {
-    text += "Beulah";
-    classList = "Beulah";
-  } else if (
-    props.G.roundType !== handType ||
-    compareHighest(stagingArea, props.G.center) !== 1 ||
-    stagingArea.length !== props.G.center.length
-  ) {
-    text += stagingArea.length === 1 ? "Play Card" : "Play Cards";
-  } else {
-    text += "Beulah";
-    classList = "Beulah";
-  }
-  return (
-    <button
-      className={classList}
-      disabled={invalidPlay}
-      key="BeulahPlay"
-      onClick={invalidPlay ? () => null : () => props.moves.tienLenPlay()}
-    >
-      {text}
     </button>
   );
 }
@@ -105,37 +70,75 @@ function playCardsButton(props) {
     stagingBackArea,
     props.G.roundType
   );
-  if (typeof p === "string") {
+  if (playerID !== currentPlayer) {
+    if (stagingBackArea.length !== 0) {
+      return (
+        <button className="wait" key="playcards">
+          PUT CENTER CARDS BACK UNTIL YOUR TURN
+        </button>
+      );
+    } else {
+      return (
+        <button className="wait" key="playcards">
+          Not Your Turn
+        </button>
+      );
+    }
+  } else if (typeof p === "string") {
     return (
       <button className="disabled" disabled={true} key="playcards">
         {p}
       </button>
     );
-  } else if (playerID !== currentPlayer) {
-    return (
-      <button className="wait" key="playcards">
-        Not Your Turn
-      </button>
-    );
   } else {
     return (
       <button key="playcards" onClick={() => props.moves.cardsToCenter()}>
-        {stagingArea.length === 1 ? "Play Card" : "Play Cards"}
+        Confirm Swap
       </button>
     );
   }
 }
 
 function passTurnButton(props) {
-  return (
-    <button
-      className="button"
-      key="passTurn"
-      onClick={() => props.moves.passTurn()}
-    >
-      Pass Turn
-    </button>
-  );
+  const playerID = props.playerID;
+  let stagingArea = props.G.players[playerID].stagingArea;
+  let stagingBackArea = props.G.players[playerID].stagingBackArea;
+  if (stagingBackArea.length + stagingArea.length == 0) {
+    return (
+      <button
+        className="button"
+        key="passTurn"
+        onClick={() => props.moves.passTurn()}
+      >
+        Pass Turn
+      </button>
+    );
+  } else {
+    return (
+      <button className="disabled" disabled={true} key="passTurn">
+        Clear Cards Before Passing
+      </button>
+    );
+  }
+}
+
+function knockButton(props) {
+  const playerID = props.playerID;
+  let stagingArea = props.G.players[playerID].stagingArea;
+  let stagingBackArea = props.G.players[playerID].stagingBackArea;
+  if (stagingBackArea.length + stagingArea.length == 0) {
+    return (
+      <button
+        className="button"
+        key="knock"
+        onClick={() => props.moves.passTurn()}
+      >
+        Knock!
+      </button>
+    );
+  } else {
+    return (null);
+  }
 }
 
 Buttons.propTypes = {
