@@ -1,10 +1,6 @@
 // src/moves/cardPlayMoves.js
-import { Combinations } from "../constants";
-import {
-  validCombination,
-  validChop,
-  compareHighest,
-} from "./helper-functions/cardComparison";
+//import { Combinations } from "../constants";
+
 //const _ = require("lodash");
 
 export function validPlay(stagingArea, stagingBackArea, roundType) {
@@ -17,31 +13,11 @@ export function validPlay(stagingArea, stagingBackArea, roundType) {
   }
 }
 
-export function tienLenPlay(G, ctx) {
-  let stagingArea = G.players[ctx.currentPlayer].stagingArea;
-  const handType = validCombination(stagingArea);
-  if (validChop(G.center, stagingArea)) {
-    G.roundType = handType;
-  } else if (
-    // not a valid tien len play
-    G.roundType !== handType ||
-    compareHighest(stagingArea, G.center) !== 1 ||
-    stagingArea.length !== G.center.length
-  ) {
-    ctx.events.setStage("notTurn");
-    // remove any winners from turn order
-    G.turnOrder = [0, 1, 2, 3].map(x =>
-      G.winners.includes(x.toString()) ? null : x
-    );
-    G.roundType = handType;
-  }
-  cardsToCenter(G, ctx);
-}
-
 export function cardsToCenter(G, ctx) {
   const currentPlayer = ctx.currentPlayer;
   let stagingBackArea = G.players[currentPlayer].stagingBackArea;
   let stagingArea = G.players[currentPlayer].stagingArea;
+  G.roundType=""
 
   G.center = G.center.concat(stagingArea);
   G.players[currentPlayer].hand = G.players[currentPlayer].hand.concat(stagingBackArea);
@@ -63,13 +39,23 @@ export function passTurn(G, ctx) {
   nextTurn(G, ctx);
 }
 
+export function knockTurn(G, ctx) {
+  G.knock = ctx.currentPlayer;
+
+  nextTurn(G, ctx);
+}
+
 function nextTurn(G, ctx) {
   let currentPlayer = parseInt(ctx.currentPlayer);
   let nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
+  if (nextPlayer == G.knock) {
+    G.end = true;
+  }
   if (nextPlayer == 0) {
     G.roundType=""
   }
-  let removeNulls = G.turnOrder.filter(x => x !== null);
+  //let removeNulls = G.turnOrder.filter(x => x !== null); ERIC
+  /*
   if (nextPlayer === "W" && removeNulls.length !== 1) {
     // next player has already won, more players left in turn order
     // need to remove winning "W" marker
@@ -81,7 +67,7 @@ function nextTurn(G, ctx) {
     // need to pass free play to player after "W"
 
     // remove winners from turn order
-    G.turnOrder = [0, 1, 2, 3].map(x =>
+    /*G.turnOrder = [0, 1, 2, 3].map(x =>
       G.winners.includes(x.toString()) ? null : x
     );
     G.roundType = Combinations.ANY;
@@ -89,16 +75,9 @@ function nextTurn(G, ctx) {
     // find player after winner
     currentPlayer = parseInt(G.winners[G.winners.length - 1]);
     nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
-  }
+  }*/
   ctx.events.endTurn({ next: nextPlayer });
-  removeNulls = G.turnOrder.filter(x => x !== null);
-  if (removeNulls.length === 1) {
-    // need to place new currentPlayer into tien len
-    ctx.events.setActivePlayers({
-      currentPlayer: { stage: "tienLen" },
-      others: { stage: "notTurn" },
-    });
-  }
+  //removeNulls = G.turnOrder.filter(x => x !== null); ERIC
 }
 
 function findNextPlayer(turnOrder, currentPlayer) {

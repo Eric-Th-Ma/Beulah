@@ -71,9 +71,17 @@ export default class GameArea extends Component {
               <div key="center" className="round-type">
                 {this.props.G.roundType=="Opening Round" ? this.props.G.roundType : null}
                 {this.props.gameMetadata.map(playerData => 
-                  playerData.id==this.props.ctx.currentPlayer ? 
-                  <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
-                  null)}
+                  !this.props.G.end ? 
+                    (playerData.id==this.props.ctx.currentPlayer ? 
+                    <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
+                    null) : 
+                  <div key={playerData.id}>{playerData.name}&apos;s hand
+                  <CardArea
+                  className="center"
+                  cards={this.props.G.players[parseInt(playerData.id)].hand}
+                  setList={this.props.moves.relocateCards}
+                  /></div>)}
+                {this.props.G.end ? <div>Center:</div> : null}
                 <CardArea
                   className="center"
                   group="center"

@@ -5,19 +5,21 @@ import Emoji from "a11y-react-emoji";
 
 export default function PlayerStatus({
   playerName,
-  cardsLeft,
+  chipsLeft,
   className,
-  winner,
+  //winner,
 }) {
   return (
     <div className={className}>
       {playerName}
-      {winners(winner, cardsLeft)}
+      <div>
+        <Emoji symbol="🂠" label="cards left" />: {chipsLeft}
+      </div>
     </div>
   );
 }
 
-function winners(winner, cardsLeft) {
+/*function winners(winner, chipsLeft) {
   switch (winner) {
     case 0:
       return (
@@ -40,15 +42,15 @@ function winners(winner, cardsLeft) {
     default:
       return (
         <div>
-          <Emoji symbol="🂠" label="cards left" />: {cardsLeft}
+          <Emoji symbol="🂠" label="cards left" />: {chipsLeft}
         </div>
       );
   }
-}
+}*/
 
 PlayerStatus.propTypes = {
   playerName: PropTypes.string,
-  cardsLeft: PropTypes.number,
+  chipsLeft: PropTypes.number,
   className: PropTypes.string,
   winner: PropTypes.number,
 };

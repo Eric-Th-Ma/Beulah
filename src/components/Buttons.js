@@ -16,7 +16,9 @@ export default function Buttons(props) {
   buttons2.push(playCardsButton(props));
   if (currentPlayer) {
     buttons2.push(passTurnButton(props));
-    buttons2.push(knockButton(props));
+    if (props.G.knock == -1) {
+      buttons2.push(knockButton(props));
+    }
   }
 
   allButtons.push(<div className="center-container" key="buttons1">
@@ -131,7 +133,7 @@ function knockButton(props) {
       <button
         className="button"
         key="knock"
-        onClick={() => props.moves.passTurn()}
+        onClick={() => props.moves.knockTurn()}
       >
         Knock!
       </button>

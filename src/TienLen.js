@@ -1,8 +1,8 @@
 // src/TienLen.js
 
-import { PlayerView, Stage } from "boardgame.io/core";
+import { /*PlayerView,*/ Stage } from "boardgame.io/core";
 import { Suits, Ranks, /*Combinations*/ } from "./constants";
-import { cardsToCenter, passTurn, tienLenPlay } from "./moves/cardPlayMoves";
+import { cardsToCenter, passTurn, knockTurn } from "./moves/cardPlayMoves";
 import { clickSwap, relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea } from "./moves/cardAreaMoves";
 import { compareCards } from "./moves/helper-functions/cardComparison";
 const _ = require("lodash");
@@ -18,10 +18,9 @@ const TienLen = {
     fillStagingArea: fillStagingArea,
     cardsToCenter: cardsToCenter,
     passTurn: passTurn,
-    tienLenPlay: tienLenPlay,
+    knockTurn: knockTurn,
   },
   stages: {
-    tienLen: { moves: { tienLenPlay } },
     notTurn: {
       moves: { relocateCards, clickSwap, relocateMiddleCards, clearStagingArea, fillStagingArea },
     },
@@ -35,27 +34,55 @@ const TienLen = {
       others: { stage: "notTurn" },
     },
   },
-  playerView: PlayerView.STRIP_SECRETS,
-  endIf: G => {
-    if (G.winners.length === 3) {
-      let w = G.winners.concat(
-        ["0", "1", "2", "3"].filter(x => !G.winners.includes(x))
-      );
-      return { winners: w };
-    }
-  },
+  //playerView: PlayerView.STRIP_SECRETS,
+  phases: makePhases(),
   minPlayers: 1,
   maxPlayers: 9,
 };
 
-function setUp(ctx) {
-  let deck = [];
-  for (let suit of Suits) {
-    for (let rank of Ranks) {
-      deck.push({ suit: suit, rank: rank });
+function makePhases() {
+  let phases = {};
+  for (let i = 0; i<=13; i++) {
+    phases[i]= {
+      start: i==0,
+      endIf: G => {if (G.end){return G.knock;}},
+      /*onEnd: (G, ctx) => {
+        let centerCards;
+        let players;
+        [centerCards, players] = deal(ctx);
+        G.firstPlayer = (G.firstPlayer+1)%G.turnOrder.length;
+        ctx.currentPlayer=G.firstPlayer;
+        G.center = centerCards;
+        G.players = players;
+        G.knock = -1; // might change ERIC
+        G.end = false;
+        G.roundType = "Opening Round";
+      },*/
+      next: (i%13)+1,
     }
   }
+  return phases;
+}
 
+const loserMatrix = (numberPlayers) => {
+  let loseMat = {};
+  for (let num1 of [...Array(numberPlayers).keys()]) {
+    for (let num2 of [...Array(numberPlayers).keys()]) {
+      loseMat[num1] = {};
+      loseMat[num1][num2] = false;
+    }
+  }
+  return loseMat;
+}
+
+let deck = [];
+for (let suit of Suits) {
+  for (let rank of Ranks) {
+    deck.push({ suit: suit, rank: rank });
+  }
+}
+
+const deal = (ctx) => {
   //const n = ctx.random.Die(ctx.numPlayers);
   for (let i = 10; i > 0; i--) {
     deck = ctx.random.Shuffle(deck);
@@ -65,35 +92,40 @@ function setUp(ctx) {
   let centerCards = chunkedDeck[0];
 
   const players = {};
-
-  let firstPlayer;
   for (let i = 1; i <= ctx.numPlayers; i++) {
-    //if (_.find(chunkedDeck[i], { rank: "3", suit: "S" })) {
-    firstPlayer = 0// i;
-    //}
     players[i-1] = {
       hand: chunkedDeck[i],
       stagingArea: [],
       stagingBackArea: [],
     };
   }
+  return [centerCards, players];
+}
 
-  const cardsLeftFunc = () => {
-    let returnCardsLeft = {};
-    for (let num of [...Array(ctx.numPlayers).keys()]) {
-      returnCardsLeft[num] = 5;
-    }
-    return returnCardsLeft;
+const chipsLeftFunc = (numberPlayers) => {
+  let returnCardsLeft = {};
+  for (let num of [...Array(numberPlayers).keys()]) {
+    returnCardsLeft[num] = 3;
   }
+  return returnCardsLeft;
+}
+
+function setUp(ctx) {
+  let centerCards;
+  let players;
+  [centerCards, players] = deal(ctx);
 
   return {
     turnOrder: [...Array(ctx.numPlayers).keys()],
     center: centerCards,
     players: players,
+    knock: -1,
+    end: false,
     roundType: "Opening Round",
-    winners: [],
-    firstPlayer: firstPlayer,
-    cardsLeft: cardsLeftFunc(),
+    //winners: [],
+    firstPlayer: 0,
+    chipsLeft: chipsLeftFunc(ctx.numPlayers),
+    loserMatrix: loserMatrix(ctx.numPlayers)
   };
 }
 
