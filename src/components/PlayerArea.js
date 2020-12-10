@@ -13,7 +13,7 @@ export default function PlayerArea(props) {
     let playerArea = [];
     const playerID = props.playerID;
     playerArea.push(
-      <div className="center-container" key="stagingArea">
+      <div className="center-container" key="playerStatus">
       {props.gameMetadata.map(playerData => playerData.id==playerID ?
         <PlayerStatus
           playerName={playerData.name}

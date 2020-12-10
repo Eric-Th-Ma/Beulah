@@ -36,34 +36,26 @@ const TienLen = {
     },
   },
   //playerView: PlayerView.STRIP_SECRETS,
-  phases: makePhases(),
+  phases: {
+    "in-round": {
+      start: true,
+      endIf: G => {if (G.end){return true;}},
+      onEnd: (G, ctx) => {
+        G.firstPlayer = (G.firstPlayer+1)%ctx.numPlayers;
+      },
+      next: "not-in-round",
+    },
+    "not-in-round": {
+      endIf: G => {if (!G.end){return true;}},
+      onEnd: (G, ctx) => {
+        ctx.currentPlayer=G.firstPlayer.toString();
+      },
+      next: "in-round",
+    },
+  },
   minPlayers: 1,
   maxPlayers: 9,
 };
-
-function makePhases() {
-  let phases = {};
-  for (let i = 0; i<=13; i++) {
-    phases[i]= {
-      start: i==0,
-      endIf: G => {if (G.end){return G.knock;}},
-      /*onEnd: (G, ctx) => {
-        let centerCards;
-        let players;
-        [centerCards, players] = deal(ctx);
-        G.firstPlayer = (G.firstPlayer+1)%G.turnOrder.length;
-        ctx.currentPlayer=G.firstPlayer;
-        G.center = centerCards;
-        G.players = players;
-        G.knock = -1; // might change ERIC
-        G.end = false;
-        G.roundType = "Opening Round";
-      },*/
-      next: (i%13)+1,
-    }
-  }
-  return phases;
-}
 
 const loserMatrix = (numberPlayers) => {
   let loseMat = [];
@@ -127,7 +119,8 @@ function setUp(ctx) {
     //winners: [],
     firstPlayer: 0,
     chipsLeft: chipsLeftFunc(ctx.numPlayers),
-    loserMatrix: loserMatrix(ctx.numPlayers)
+    loserMatrix: loserMatrix(ctx.numPlayers),
+    middleChips: 0,
   };
 }
 

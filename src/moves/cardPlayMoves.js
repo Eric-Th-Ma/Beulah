@@ -63,11 +63,13 @@ export function pickLoser(G, ctx, picker, picked) {
 
 function nextGame(G, ctx, loser) {
   console.log("next game");
+  G.middleChips = G.middleChips + G.chipsLeft[loser]
   if (loser==G.knock) {
     G.chipsLeft[loser] = (G.chipsLeft[loser]-2) > 0 ? G.chipsLeft[loser]-2 : 0;
   } else {
     G.chipsLeft[loser] = G.chipsLeft[loser]-1;
   }
+  G.middleChips = G.middleChips - G.chipsLeft[loser]
   if (G.chipsLeft[loser]==0) {
     let beulahChip = true;
     for (let i = 0; i < G.chipsLeft.length; i++) {
@@ -82,14 +84,24 @@ function nextGame(G, ctx, loser) {
   let centerCards;
   let players;
   [centerCards, players] = deal(ctx);
-  G.firstPlayer = (G.firstPlayer+1)%G.turnOrder.length;
-  ctx.currentPlayer=G.firstPlayer;
   G.center = centerCards;
   G.players = players;
   G.knock = -1;
   G.end = false;
   G.roundType = "Opening Round";
   G.consecPasses = 0;
+  G.loserMatrix = loserMatrix(ctx.numPlayers)
+}
+
+const loserMatrix = (numberPlayers) => {
+  let loseMat = [];
+  for (let num1 of [...Array(numberPlayers).keys()]) {
+    for (let num2 of [...Array(numberPlayers).keys()]) {
+      loseMat[num1] = [];
+      loseMat[num1][num2] = false;
+    }
+  }
+  return loseMat;
 }
 
 const deal = (ctx) => {

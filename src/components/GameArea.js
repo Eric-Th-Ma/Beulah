@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 //import { getClassName } from "./_helperFunctions";
 import CardArea from "./CardArea";
+import Chip from "./Chip";
 //import PlayerStatus from "./PlayerStatus";
 
 export default class GameArea extends Component {
@@ -63,13 +64,18 @@ export default class GameArea extends Component {
             </div>
           );
           if (i === 1) {*/
+            let chips = [];
+            let wild = (this.props.G.middleChips - (this.props.G.middleChips <= 13))%13 + (this.props.G.middleChips <= 13)
+            for (let i = 0; i < wild; i++) {
+              chips.push(<Chip key={i}/>)
+            }
             const center = /*this.props.ctx.gameover ? (
               <div key="center" className="round-type">
                 Game Over!
               </div>
             ) :*/ (
               <div key="center" className="round-type">
-                {this.props.G.roundType=="Opening Round" ? this.props.G.roundType : null}
+                {chips}
                 {this.props.gameMetadata.map(playerData => 
                   !this.props.G.end ? 
                     (playerData.id==this.props.ctx.currentPlayer ? 
