@@ -1,7 +1,8 @@
 // src/moves/cardPlayMoves.js
-//import { Combinations } from "../constants";
+import { Suits, Ranks, /*Combinations*/ } from "../constants";
+import { compareCards } from "../moves/helper-functions/cardComparison";
 
-//const _ = require("lodash");
+const _ = require("lodash");
 
 export function validPlay(stagingArea, stagingBackArea, roundType) {
   if ((stagingBackArea.length === 1 && stagingArea.length === 1 && roundType!=="Opening Round") || (stagingBackArea.length === 5 && stagingArea.length === 5)) {
@@ -23,6 +24,7 @@ export function cardsToCenter(G, ctx) {
   G.players[currentPlayer].hand = G.players[currentPlayer].hand.concat(stagingBackArea);
   G.players[currentPlayer].stagingBackArea = [];
   G.players[currentPlayer].stagingArea = [];
+  G.consecPasses = 0;
   //G.cardsLeft[currentPlayer] -= G.center.length;
   /*if (G.cardsLeft[currentPlayer] === 0) {
     // won the game
@@ -36,22 +38,104 @@ export function cardsToCenter(G, ctx) {
 
 export function passTurn(G, ctx) {
   //G.turnOrder[parseInt(ctx.currentPlayer)] = null;
+  if (G.roundType !== "Opening Round") {
+    G.consecPasses = G.consecPasses + 1;
+  }
   nextTurn(G, ctx);
 }
 
 export function knockTurn(G, ctx) {
   G.knock = ctx.currentPlayer;
-
+  G.consecPasses = 0;
   nextTurn(G, ctx);
+}
+
+export function pickLoser(G, ctx, picker, picked) {
+  let neededToLose = 2;
+  G.loserMatrix[picker][picked] = true;
+  let losses = countLosers(G.loserMatrix);
+  for (let i = 0; i < losses.length; i++) {
+    if (losses[i]>=neededToLose) {
+      nextGame(G, ctx, i);
+    }
+  }
+}
+
+function nextGame(G, ctx, loser) {
+  console.log("next game");
+  if (loser==G.knock) {
+    G.chipsLeft[loser] = (G.chipsLeft[loser]-2) > 0 ? G.chipsLeft[loser]-2 : 0;
+  } else {
+    G.chipsLeft[loser] = G.chipsLeft[loser]-1;
+  }
+  if (G.chipsLeft[loser]==0) {
+    let beulahChip = true;
+    for (let i = 0; i < G.chipsLeft.length; i++) {
+      if (G.chipsLeft[i] == 0 && i != loser) {
+        beulahChip = false;
+      }
+    }
+    if (beulahChip) {
+      G.chipsLeft[loser] = G.chipsLeft[loser]+1;
+    }
+  }
+  let centerCards;
+  let players;
+  [centerCards, players] = deal(ctx);
+  G.firstPlayer = (G.firstPlayer+1)%G.turnOrder.length;
+  ctx.currentPlayer=G.firstPlayer;
+  G.center = centerCards;
+  G.players = players;
+  G.knock = -1;
+  G.end = false;
+  G.roundType = "Opening Round";
+  G.consecPasses = 0;
+}
+
+const deal = (ctx) => {
+  let deck = [];
+  for (let suit of Suits) {
+    for (let rank of Ranks) {
+      deck.push({ suit: suit, rank: rank });
+    }
+  }
+  for (let i = 10; i > 0; i--) {
+    deck = ctx.random.Shuffle(deck);
+  }
+  const chunkedDeck = _.chunk(deck, 5).map(x => x.sort(compareCards));
+
+  let centerCards = chunkedDeck[0];
+
+  const players = {};
+  for (let i = 1; i <= ctx.numPlayers; i++) {
+    players[i-1] = {
+      hand: chunkedDeck[i],
+      stagingArea: [],
+      stagingBackArea: [],
+    };
+  }
+  return [centerCards, players];
+}
+
+function countLosers(loseMat) {
+  let losses = [0,0,0,0,0,0,0,0,0,0];
+  for (let pickersList of loseMat) {
+    for (let i = 0; i < pickersList.length; i++) {
+      if (pickersList[i]) {
+        losses[i] = losses[i]+1;
+      }
+    }
+  }
+  return losses;
 }
 
 function nextTurn(G, ctx) {
   let currentPlayer = parseInt(ctx.currentPlayer);
   let nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
-  if (nextPlayer == G.knock) {
+  if (nextPlayer == G.knock || G.consecPasses == ctx.numPlayers) {
     G.end = true;
   }
-  if (nextPlayer == 0) {
+  if (nextPlayer == G.firstPlayer) {
     G.roundType=""
   }
   //let removeNulls = G.turnOrder.filter(x => x !== null); ERIC

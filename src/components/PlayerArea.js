@@ -5,12 +5,23 @@ import Buttons from "./Buttons";
 import { getClassName } from "./_helperFunctions";
 import CardArea from "./CardArea";
 import useWindowDimensions from './useWindowDimensions';
+import PlayerStatus from "./PlayerStatus";
 
 export default function PlayerArea(props) {
   const { height, width } = useWindowDimensions();
     const wide = width > height;
     let playerArea = [];
     const playerID = props.playerID;
+    playerArea.push(
+      <div className="center-container" key="stagingArea">
+      {props.gameMetadata.map(playerData => playerData.id==playerID ?
+        <PlayerStatus
+          playerName={playerData.name}
+          chipsLeft={props.G.chipsLeft[playerID]}
+          className="my-status"
+        /> : null)}
+      </div>
+    );
     playerArea.push(
       <div className="center-container" key="stagingArea">
         <CardArea

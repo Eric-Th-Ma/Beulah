@@ -237,6 +237,18 @@ code {
   font-variant: small-caps;
 }
 
+.chip-container {
+  height: 1em;
+  padding-right:3px;
+  padding-top: 3px;
+  display:inline-block;
+}
+
+.chipimg {
+  max-height: 100%;
+  max-width: 100%;
+}
+
 /* button related */
 button {
   @extend %shadow;

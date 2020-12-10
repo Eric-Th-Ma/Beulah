@@ -2,7 +2,7 @@
 
 import { /*PlayerView,*/ Stage } from "boardgame.io/core";
 import { Suits, Ranks, /*Combinations*/ } from "./constants";
-import { cardsToCenter, passTurn, knockTurn } from "./moves/cardPlayMoves";
+import { cardsToCenter, passTurn, knockTurn, pickLoser } from "./moves/cardPlayMoves";
 import { clickSwap, relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea } from "./moves/cardAreaMoves";
 import { compareCards } from "./moves/helper-functions/cardComparison";
 const _ = require("lodash");
@@ -19,10 +19,11 @@ const TienLen = {
     cardsToCenter: cardsToCenter,
     passTurn: passTurn,
     knockTurn: knockTurn,
+    pickLoser: pickLoser,
   },
   stages: {
     notTurn: {
-      moves: { relocateCards, clickSwap, relocateMiddleCards, clearStagingArea, fillStagingArea },
+      moves: { relocateCards, clickSwap, relocateMiddleCards, clearStagingArea, fillStagingArea, pickLoser},
     },
   },
   turn: {
@@ -65,10 +66,10 @@ function makePhases() {
 }
 
 const loserMatrix = (numberPlayers) => {
-  let loseMat = {};
+  let loseMat = [];
   for (let num1 of [...Array(numberPlayers).keys()]) {
     for (let num2 of [...Array(numberPlayers).keys()]) {
-      loseMat[num1] = {};
+      loseMat[num1] = [];
       loseMat[num1][num2] = false;
     }
   }
@@ -122,6 +123,7 @@ function setUp(ctx) {
     knock: -1,
     end: false,
     roundType: "Opening Round",
+    consecPasses: 0,
     //winners: [],
     firstPlayer: 0,
     chipsLeft: chipsLeftFunc(ctx.numPlayers),

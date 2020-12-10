@@ -1,7 +1,7 @@
 // src/PlayerStatus.js
 import React from "react";
 import PropTypes from "prop-types";
-import Emoji from "a11y-react-emoji";
+import Chip from "./Chip";
 
 export default function PlayerStatus({
   playerName,
@@ -13,7 +13,7 @@ export default function PlayerStatus({
     <div className={className}>
       {playerName}
       <div>
-        <Emoji symbol="🂠" label="cards left" />: {chipsLeft}
+        <Chip />: {chipsLeft}
       </div>
     </div>
   );

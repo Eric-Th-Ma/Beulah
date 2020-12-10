@@ -76,11 +76,19 @@ export default class GameArea extends Component {
                     <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
                     null) : 
                   <div key={playerData.id}>{playerData.name}&apos;s hand
-                  <CardArea
-                  className="center"
-                  cards={this.props.G.players[parseInt(playerData.id)].hand}
-                  setList={this.props.moves.relocateCards}
-                  /></div>)}
+                    <CardArea
+                    className="center"
+                    cards={this.props.G.players[parseInt(playerData.id)].hand}
+                    setList={this.props.moves.relocateCards}
+                    />
+                    <button
+                      className="button"
+                      key="pickLoser"
+                      onClick={() => this.props.moves.pickLoser(parseInt(this.props.playerID), parseInt(playerData.id))}
+                    >
+                      {playerData.name} lost
+                    </button>
+                  </div>)}
                 {this.props.G.end ? <div>Center:</div> : null}
                 <CardArea
                   className="center"
