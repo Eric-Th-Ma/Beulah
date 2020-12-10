@@ -1,205 +1,167 @@
 import React from "react";
 
+const requestImageFile = require.context("../assets/other", true, /.png$/);
 export default function Rules() {
   return (
-    <div>
-      <h1 id="rules-of-ti-n-l-n">Rules of Tiến Lên</h1>
+    <div style={{ padding: 50 }}>
+      <h1 id="playing-online">Online playing</h1>
+      <h2 id="create-game">Making a game</h2>
       <p>
-        <em>Tiến Lên</em> is a card game for 4 players. There are many rules
-        that differ among play groups; these are the rules my family uses. The
-        object of the game is to get rid of all of the cards in your hand.
+        This website allows you to play Beulah online. To do so you must enter your name to get into 
+        the game lobby, and then have one person create a game with the number of players that will be 
+        playing.
       </p>
-      <h2 id="cards">Cards</h2>
       <p>
-        Tiến Lên uses a standard, 52-card deck. The cards are ranked, from low
-        to high: 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K, A, 2. The cards are also
-        ranked based on suits, from low to high: spades (♠), clubs (♣), diamonds
-        (<span className="red-suit">♦</span>), hearts (
-        <span className="red-suit">♥</span>). Thus, the 3♠ is the lowest ranked
-        card in the game, and the 2<span className="red-suit">♥</span> is the
-        highest ranked card in the game. When ranking cards, rank takes priority
-        over suit: a 3<span className="red-suit">♥</span> is higher than a 3
-        <span className="red-suit">♦</span>, but a 4♠ is higher than both of
-        them.
+        Everyone who is playing will need to join on a seperate device, and enter their name. Then all 
+        players will need to join the game. <b><em>Important Note: </em></b> the order that people join
+        will be the game order. The first person to join will go first in the first round, the second 
+        person to join will go first in the second round and so on, and within each round turns will pass 
+        in that order as well
       </p>
+
+      <h2 id="play-game">Playing</h2>
+      <h3 id="Starting-the-game">Starting the Game</h3>
+      <p>
+        Once the game is full, players will click play to start the game. A hand will automatically be 
+        dealt to all players and the dealer, and the first person can take their turn.
+      </p>
+
+      <h3 id="Starting-the-game">Making Moves</h3>
+      <p>
+        When playing you will see the following screen:
+      </p>
+      <img className="playerScreen" src={requestImageFile(`./playerScreen.png`).default}></img>
+      <p>
+        On this screen you will see whose turn it is, and you will see the following sections:
+      </p>
+      <ul>
+        <li>
+          <b>Center Hand </b> This shows the hand in the center. Until someone takes it or everyone 
+          passes these cards will be face down. To take cards from the middle you can click them or drag
+          them to move them into the staging area.
+        </li>
+        <li>
+          <b>Player Info </b> Your name and the number of chips you have remaining. Hover over this to 
+          see the same information for all players.
+        </li>
+        <li>
+          <b>Staging Area For Swaps </b> This is where you will place cards before swapping them. Click 
+          or drag cards to move them in and out of the staging area. The left (or top on narrow screens) is 
+          for cards staged to move from the center into your hand. The right (or bottom on narrow screens) 
+          is for cards staged to move from your hand into the center.
+        </li>
+        <li>
+          <b>Play Buttons </b>
+          <ul>
+            <li>
+              <b>Clear Staging Area </b> This removes all cards from both staging areas and returns them 
+              to where they were before.
+            </li>
+            <li>
+              <b>Swap All Cards </b> This adds all cards to both staging areas from the center and your hand.
+            </li>
+            <li>
+              <b>Confirm Swap </b> This swaps all cards from the staging areas to their destinations. If you 
+              cannot make the swap then this button will not be clickable but will explain why you cannot make 
+              the swap.
+            </li>
+            <li>
+              <b>Pass Turn </b> This passes your turn. This button will only appear if it is your turn.
+            </li>
+            <li>
+              <b>Knock! </b> This knocks and passes your turn. This button will only appear if it is your turn.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <b>Your Hand </b> This shows your hand. You can click or drag cards to move them into the staging area. 
+          You may also want to drag cards within your hand to organize your hand.
+        </li>
+      </ul>
+
+
+
+      <h1 id="rules-of-Beulah">Rules of Beulah</h1>
+      <p>
+        <em>Beulah</em> is a card game for 2-9 players. The
+        object of the game is to be the last person with at least one chip remaining.
+      </p>
+
+      <h2 id="cards">Cards and Hands</h2>
+      <p>
+        Beulah uses a standard, 52-card deck. It uses the typical poker hands which are, from high to low:
+      </p>
+      <ol>
+        <li><b>Royal Flush </b> ten, jack, queen, king and ace of the same suit</li>
+        <li><b>Five of a Kind </b> 5 cards of the same value (only possible with at least one wild)</li>
+        <li><b>Straight Flush </b> 5 cards in order of the same suit</li>
+        <li><b>Four of a Kind </b> 4 cards of the same value</li>
+        <li><b>Full House </b> 3 cards of the same value, and 2 cards of the same value</li>
+        <li><b>Flush </b> 5 cards of the same suit</li>
+        <li><b>Straight </b> 5 cards in order</li>
+        <li><b>Three of a Kind </b> 3 cards of the same value</li>
+        <li><b>Two Pair </b> 2 cards of the same value and 2 more cards of the same value</li>
+        <li><b>Pair </b> 2 cards of the same value</li>
+        <li><b>High Card </b> None of the above</li>
+      </ol>
+      
       <h2 id="setup">Setup</h2>
       <p>
-        For the first game, the player with the 3♠ starts, and must start play
-        using the 3♠.
-        {/* For every game after, the winner of the previous game
-        starts, with no restrictions on their starting play. Play then continues
-        counter-clockwise from whoever started. */}
+        Each player starts with 3 chips. The game consists of rounds. 
+        To start each round each player is dealt five cards and five cards 
+        are dealt face down to the center of the table.
       </p>
+
       <h2 id="playing-the-game">Playing the Game</h2>
+
+      <h3 id="Starting-a-round">Starting a round</h3>
       <p>
-        The starting player starts a round by playing from their hand some
-        combination of cards to the center of the table. There are 4 standard
-        types of combinations:
+        The starting player is the player who sits to the left of the dealer. The next 
+        rounds dealer is the previous rounds starter. Begining with the starting player 
+        and proceeding to the left each player has the choice of keeping the hand they 
+        were dealt (by passing or knocking) or taking the entire face down center hand
+        and placing their hand face up in its place. If all players pass on the opportunity 
+        to take the center hand then it is flipped over and play proceeds.
       </p>
-      <h4 id="standard-combinations">Standard Combinations</h4>
-      <ul>
-        <li>
-          <strong>single</strong> - a single card (ex. 6
-          <span className="red-suit">♦</span>)
-        </li>
-        <li>
-          <strong>pair</strong> - two cards of the same rank (ex. 5♠ 5
-          <span className="red-suit">♦</span>)
-        </li>
-        <li>
-          <strong>triple</strong> - three cards of the same rank (ex. 8♠ 8
-          <span className="red-suit">♦</span> 8
-          <span className="red-suit">♥</span>)
-        </li>
-        <li>
-          <strong>straight</strong> - at least three cards of consecutive rank
-          (9♠ 10<span className="red-suit">♥</span> J
-          <span className="red-suit">♦</span> Q
-          <span className="red-suit">♦</span>); 2&#39;s cannot be included in
-          straights
-        </li>
-      </ul>
+
+      <h3 id="standard-combinations">Rest of the round</h3>
       <p>
-        The next player can then play a combination that beats the combination
-        in the center, or pass.
-      </p>
-      <h3 id="beating-a-combination">Beating a Combination</h3>
-      <p>
-        A combination can only be beat by a combination of the same type with a
-        higher highest-ranked card in the combination. For example, the pair 7♠
-        7<span className="red-suit">♥</span> beats the pair 7♣ 7
-        <span className="red-suit">♦</span>, because the highest card of the
-        former pair (7<span className="red-suit">♥</span>) is higher than the
-        highest card of the latter pair (7<span className="red-suit">♦</span>).
-      </p>
-      <p>
-        For straights, the number of cards in the straight is part of the kind
-        of combination, so a 5-card straight can only be beaten by another
-        5-card straight.
-      </p>
-      <h3 id="passing">Passing</h3>
-      <p>
-        If a player cannot or does not want to beat the combination in the
-        center, they may pass. When a player passes, they may not play any more
-        cards until a new round begins; play will simply skip over them as it
-        goes around the table.
-      </p>
-      <h3 id="ti-n-l-n">Tiến Lên</h3>
-      <p>
-        When every player has passed in a round except for one, that remaining
-        player may <em>tiến lên</em> (go forward) by playing 1 or more
-        combinations to the center that beat the combination currently in the
-        center. When a player is in <em>tiến lên</em>, other players may not
-        play any cards. For example, if player A is the last remaining player in
-        a round, with the pair 6<span className="red-suit">♦</span> 6
-        <span className="red-suit">♥</span> in the middle, player A may play the
-        pair 8♠ 8<span className="red-suit">♥</span> and then the pair 10♠ 10
-        <span className="red-suit">♦</span> and stay in <em>tiến lên</em>, so no
-        player may attempt to beat either of those pairs. Note that player A
-        could not play those pairs in the opposite order and stay in{" "}
-        <em>tiến lên</em>: if player A played the pair 10♠ 10
-        <span className="red-suit">♦</span> first, then the pair 8♠ 8
-        <span className="red-suit">♥</span> does not beat the combination
-        currently in the center (10♠ 10<span className="red-suit">♦</span>) and
-        could not be played while staying in <em>tiến lên</em>.
-      </p>
-      <p>
-        Whether the remaining player plays any cards in <em>tiến lên</em>, that
-        player will then start a new round of play by playing some combination
-        of cards to the center.
-      </p>
-      <h3 id="chops">Chops</h3>
-      <p>
-        Chops are special combinations of cards that beat 2&#39;s, the highest
-        cards in the game. There are 3 types of chops:
+        Once the center has been flipped (either because it was taken or everyone passed) 
+        players have 4 possible plays for each turn:
       </p>
       <ul>
         <li>
-          <strong>3 consecutive pairs</strong> - three pairs of cards, with the
-          pairs being of consecutive rank (ex. 6
-          <span className="red-suit">♦</span> 6
-          <span className="red-suit">♥</span> 7
-          <span className="red-suit">♦</span> 7
-          <span className="red-suit">♥</span> 8♠ 8
-          <span className="red-suit">♦</span>); beats any single 2
+          <strong>Single card swap: </strong> Swapping a card from your hand to the middle, 
+          and a card from the middle to your hand.
         </li>
         <li>
-          <strong>4 of a kind</strong> - four cards of the same rank (ex. 5♠ 5♣
-          5<span className="red-suit">♦</span> 5
-          <span className="red-suit">♥</span>
-          ), beats any single 2
+          <strong>Full hand swap: </strong> Swapping your entire hand to the middle, 
+          and the entire middle to your hand.
         </li>
         <li>
-          <strong>4 consecutive pairs</strong> - four pairs of cards, with the
-          pairs being of consecutive rank (ex. 6
-          <span className="red-suit">♦</span> 6
-          <span className="red-suit">♥</span> 7
-          <span className="red-suit">♦</span> 7
-          <span className="red-suit">♥</span> 8♠ 8
-          <span className="red-suit">♦</span> 9♣ 9
-          <span className="red-suit">♦</span>), beats any single 2 or any pair
-          of 2&#39;s
+          <strong>Pass: </strong> Do nothing and allow the next person to take a turn. 
+          <em>Note: </em> if all players pass while the middle is face up then the round 
+          will end immediately.
+        </li>
+        <li>
+          <strong>Knock: </strong> When someone is confident in their hand they can knock 
+          on their turn. This immediately ends their turn. Everyone else will get to take 
+          one more turn then the round will end.
         </li>
       </ul>
+
+      <h3 id="beating-a-combination">End of a round</h3>
       <p>
-        Chops can only be played to beat a 2 (or pair of 2&#39;s, for 4
-        consecutive pairs) or to start a round. Therefore, during a round of
-        single cards, a chop can be played to beat a 2♠, but not an A
-        <span className="red-suit">♥</span>.
+        When a round ends everyone reveals their hands and whoever has the <em>worst</em> hand 
+        (by the poker hands listed above) loses 1 chip, unless they knocked in which case they 
+        lose 2 chips.
       </p>
+
+      <h2 id="losing">Losing</h2>
       <p>
-        Chops can be beaten like any other combination, following the identical
-        same type, highest card rule.
+        When a player loses their last chip, if no one else has lost their last chip they may 
+        have the Beulah chip, otherwise they have lost and are out of the game.
       </p>
-      <h2 id="winning">Winning</h2>
-      <p>
-        When a player runs out of cards in their hand, they win. When a player
-        wins, other players continue play as normal, essentially skipping that
-        player during play. If the player finished during <em>tiến lên</em> or
-        all other players pass the final combination that player played, the
-        next player counter-clockwise starts a new round.
-      </p>
-      <p>
-        The game continues until there is only one player left with cards in
-        their hand. Rankings are based on when players run out of cards in their
-        hand compared to the others; i.e. the first player to run out of cards
-        is first place for that game, the second player to do so is second, the
-        third is third, and the player with cards remaining at the end of the
-        game is fourth.
-      </p>
-      <h2 id="miscellaneous">Miscellaneous</h2>
-      <p>
-        Typically players do not have to disclose how many cards they have in
-        their hand at any point, but players may agree to be honest beforehand.
-        In this implementation, cards in hand is open information.
-      </p>
-      <p>
-        Traditionally the fourth-placed player of each game shuffles and deals
-        for the next game.
-      </p>
-      <p>
-        Some of the terminology in these rules (notably, <em>combination</em>,{" "}
-        <em>round</em>, <em>center</em>) are used for clarity in these rules,
-        but are not normally used in describing/playing.
-      </p>
-      <p>
-        Some traditional terminology used in my family not mentioned in these
-        rules:
-      </p>
-      <ul>
-        <li>
-          <em>trash</em> - cards in a hand that do not fit into a multi-card
-          combination
-        </li>
-        <li>
-          <em>winner</em> - the player who places first in a game, may be said
-          to have <em>won</em>
-        </li>
-        <li>
-          <em>loser</em> - the player who places fourth in a game, may be said
-          to have <em>lost</em>
-        </li>
-      </ul>
     </div>
   );
 }
