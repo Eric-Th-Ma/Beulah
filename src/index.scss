@@ -249,6 +249,10 @@ code {
   max-width: 100%;
 }
 
+.my-status {
+  padding: 1em;
+}
+
 /* button related */
 button {
   @extend %shadow;
