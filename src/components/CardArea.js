@@ -40,5 +40,5 @@ CardArea.propTypes = {
   group: PropTypes.string,
   listName: PropTypes.string,
   roundType: PropTypes.string,
-  clickSwap: PropTypes.func.isRequired,
+  clickSwap: PropTypes.func,
 };

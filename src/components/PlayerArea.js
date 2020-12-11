@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import Buttons from "./Buttons";
 import { getClassName } from "./_helperFunctions";
 import CardArea from "./CardArea";
-//import useWindowDimensions from './useWindowDimensions';
 import PlayerStatus from "./PlayerStatus";
 
 export default class PlayerArea extends Component {
