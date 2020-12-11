@@ -52,7 +52,7 @@ export function knockTurn(G, ctx) {
 
 export function pickLoser(G, ctx, picker, picked) {
   let neededToLose = 2;
-  G.loserMatrix[picker][picked] = true;
+  G.loserMatrix[picker][picked] = !G.loserMatrix[picker][picked];
   let losses = countLosers(G.loserMatrix);
   for (let i = 0; i < losses.length; i++) {
     if (losses[i]>=neededToLose) {
@@ -62,7 +62,6 @@ export function pickLoser(G, ctx, picker, picked) {
 }
 
 function nextGame(G, ctx, loser) {
-  console.log("next game");
   G.middleChips = G.middleChips + G.chipsLeft[loser]
   if (loser==G.knock) {
     G.chipsLeft[loser] = (G.chipsLeft[loser]-2) > 0 ? G.chipsLeft[loser]-2 : 0;
@@ -141,13 +140,12 @@ function countLosers(loseMat) {
 function nextTurn(G, ctx) {
   let currentPlayer = parseInt(ctx.currentPlayer);
   let nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
-  if (nextPlayer == G.knock || G.consecPasses == G.turnOrder.length) {
+  if (nextPlayer == G.knock || G.consecPasses == (G.turnOrder.filter(x => x!==null).length)) {
     G.end = true;
   }
   if (nextPlayer == G.firstPlayer) {
     G.roundType=""
   }
-  G.turnOrder.filter(x => x !== null);
   /*
   if (nextPlayer === "W" && removeNulls.length !== 1) {
     // next player has already won, more players left in turn order

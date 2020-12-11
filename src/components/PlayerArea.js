@@ -57,7 +57,7 @@ export default class PlayerArea extends Component {
         /> : null)}
       </div>
     );
-    if (this.props.G.turnOrder[playerID] === null) {
+    if (this.props.G.turnOrder[playerID] === null || this.props.ctx.gameover) {
       return (
         <div className={getClassName(this.props, playerID, "player-area")}>
           {playerArea}

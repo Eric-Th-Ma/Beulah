@@ -8,122 +8,71 @@ import Chip from "./Chip";
 
 export default class GameArea extends Component {
   render() {
-    //const playerID = this.props.playerID;
-    //const pID = playerID ? parseInt(playerID) : 0;
     let gameArea = [];
     let centerRow = [];
-    /*
-    for (let i of [2, 3, "center", 1, 0]) {
-      if (i === "center") {
-        const center = this.props.ctx.gameover ? (
-          <div key="center" className="round-type">
-            Game Over!
-          </div>
-        ) : (
-          <div key="center" className="round-type">
-            {this.props.G.roundType=="Opening Round" ? this.props.G.roundType : null}
-            <CardArea
+    let chips = [];
+    let wild = (this.props.G.middleChips - (this.props.G.middleChips <= 13))%13 + (this.props.G.middleChips <= 13)
+    for (let i = 0; i < wild; i++) {
+      chips.push(<Chip key={i}/>)
+    }
+    const center = this.props.ctx.gameover ? (
+      <div key="center" className="round-type">
+        Game Over! {this.props.gameMetadata.map(
+          playerData => 
+          this.props.G.turnOrder[playerData.id]!==null ? 
+          playerData.name : 
+          null)
+        } Wins!
+      </div>
+    ) : (
+      <div key="center" className="round-type">
+        {chips}
+        {this.props.gameMetadata.map(playerData => 
+          !this.props.G.end ? 
+            (playerData.id==this.props.ctx.currentPlayer ? 
+            <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
+            null) : 
+            (this.props.G.chipsLeft[playerData.id] > 0 ?
+            <div key={playerData.id} className="player-summary">
+              <div>
+                <div className="left">{playerData.name}&apos;s hand</div>
+                <button
+                  className="inline-button"
+                  key="pickLoser"
+                  onClick={() => this.props.moves.pickLoser(parseInt(this.props.playerID), parseInt(playerData.id))}
+                >
+                  {this.props.G.loserMatrix[parseInt(this.props.playerID)][parseInt(playerData.id)] ? 
+                    <div>Undo Pick</div> : <div>{playerData.name} Lost</div>
+                  }
+                </button>
+              </div>
+              <CardArea
               className="center"
-              group="center"
-              cards={this.props.G.center}
-              listName="centerCards"
-              setList={this.props.moves.relocateMiddleCards}
-              roundType={this.props.G.roundType}
-            />
-          </div>
-        );
-        centerRow.push(center);
-      } else {
-        const index = (i + pID) % this.props.ctx.numPlayers;
-        const indexString = index.toString();
-        const playerStatusClassName = getClassName(
-          this.props,
-          indexString,
-          "player-status"
-        );
-        if (i === 2 || (i === 0 && !playerID)) {
-          gameArea.push(
-            <div className="center-container" key={indexString}>
-              <PlayerStatus
-                playerName={indexString}
-                cardsLeft={this.props.G.cardsLeft[index]}
-                className={playerStatusClassName}
-                winner={this.props.G.winners.findIndex(x => x === indexString)}
+              cards={this.props.G.players[parseInt(playerData.id)].hand}
+              setList={this.props.moves.relocateCards}
+              clickSwap={(a,b,c,d)=>[a,b,c,d]}
               />
-            </div>
-          );
-        } else if (i % 2 === 1) {
-          centerRow.push(
-            <div key={indexString}>
-              <PlayerStatus
-                playerName={indexString}
-                cardsLeft={this.props.G.cardsLeft[index]}
-                className={playerStatusClassName}
-                winner={this.props.G.winners.findIndex(x => x === indexString)}
-              />
-            </div>
-          );
-          if (i === 1) {*/
-            let chips = [];
-            let wild = (this.props.G.middleChips - (this.props.G.middleChips <= 13))%13 + (this.props.G.middleChips <= 13)
-            for (let i = 0; i < wild; i++) {
-              chips.push(<Chip key={i}/>)
-            }
-            const center = /*this.props.ctx.gameover ? (
-              <div key="center" className="round-type">
-                Game Over!
-              </div>
-            ) :*/ (
-              <div key="center" className="round-type">
-                {chips}
-                {this.props.gameMetadata.map(playerData => 
-                  !this.props.G.end ? 
-                    (playerData.id==this.props.ctx.currentPlayer ? 
-                    <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
-                    null) : 
-                    (this.props.G.chipsLeft[playerData.id] > 0 ?
-                    <div key={playerData.id} className="player-summary">
-                      <div>
-                        <div className="left">{playerData.name}&apos;s hand</div>
-                        <button
-                          className="inline-button"
-                          key="pickLoser"
-                          onClick={() => this.props.moves.pickLoser(parseInt(this.props.playerID), parseInt(playerData.id))}
-                        >
-                          {playerData.name} Lost
-                        </button>
-                      </div>
-                      <CardArea
-                      className="center"
-                      cards={this.props.G.players[parseInt(playerData.id)].hand}
-                      setList={this.props.moves.relocateCards}
-                      clickSwap={(a,b,c,d)=>[a,b,c,d]}
-                      />
-                    </div> : null)
-                  )
-                }
-                {this.props.G.end ? <div>Center:</div> : null}
-                <CardArea
-                  className="center"
-                  group="center"
-                  cards={this.props.G.center}
-                  listName="centerCards"
-                  setList={this.props.moves.relocateMiddleCards}
-                  roundType={this.props.G.roundType}
-                  clickSwap={this.props.moves.clickSwap}
-                />
-              </div>
-            );
-            centerRow.push(center);
-            gameArea.push(
-              <div key="centerRow" className="center-row">
-                {centerRow}
-              </div>
-            );/*
-          }
+            </div> : null)
+          )
         }
-      }
-    }*/
+        {this.props.G.end ? <div>Center:</div> : null}
+        <CardArea
+          className="center"
+          group="center"
+          cards={this.props.G.center}
+          listName="centerCards"
+          setList={this.props.moves.relocateMiddleCards}
+          roundType={this.props.G.roundType}
+          clickSwap={this.props.moves.clickSwap}
+        />
+      </div>
+    );
+    centerRow.push(center);
+    gameArea.push(
+      <div key="centerRow" className="center-row">
+        {centerRow}
+      </div>
+    );
     return <div className="game-area">{gameArea}</div>;
   }
 }
