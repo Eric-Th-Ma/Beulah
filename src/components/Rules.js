@@ -16,14 +16,14 @@ export default function Rules() {
         players will need to join the game. <b><em>Important Note: </em></b> the order that people join
         will be the game order. The first person to join will go first in the first round, the second 
         person to join will go first in the second round and so on, and within each round turns will pass 
-        in that order as well
+        in that order as well.
       </p>
 
       <h2 id="play-game">Playing</h2>
       <h3 id="Starting-the-game">Starting the Game</h3>
       <p>
         Once the game is full, players will click play to start the game. A hand will automatically be 
-        dealt to all players and the dealer, and the first person can take their turn.
+        dealt to all players and the center, and the first person can take their turn.
       </p>
 
       <h3 id="Starting-the-game">Making Moves</h3>
@@ -78,7 +78,28 @@ export default function Rules() {
           You may also want to drag cards within your hand to organize your hand.
         </li>
       </ul>
-
+      <h3 id="end-round">Round Ending</h3>
+      <p>
+        Once a round ends (after a knock or a full cycle of passing). All hands will be revealed automatically. 
+        Players can go around and tell others what hand they have. After that players can select who lost. Once two 
+        players have picked the same losing player that player will automatically lose one chip (or two if they knocked), 
+        and the next round will automatically start.
+      </p>
+      <p>
+        In subsequent rounds chips will appear above the text announcing whose turn it is. These chips denote center chips, 
+        so the number of chips determines the wild card. For simplicity once the number of center chips exceeds 13 only the 
+        relevant chips are shown (i.e. if there are 15 chips in the center only two will be shown because twos are wild).
+      </p>
+      <h3 id="losing">Losing players</h3>
+      <p>
+        Once a player reaches 0 chips if they are the first player to do so they will automatically recieve the Beulah chip, 
+        otherwise they have lost the game and their play area will go grey. They will still see the center cards, and all chip 
+        counts, but will not have a hand, staging areas, or play buttons. They can remain online and select the losing player 
+        following each round.
+      </p>
+      <p>
+        Once all players except for 1 has lost the game will end and that player will win!
+      </p>
 
 
       <h1 id="rules-of-Beulah">Rules of Beulah</h1>
@@ -104,6 +125,10 @@ export default function Rules() {
         <li><b>Pair </b> 2 cards of the same value</li>
         <li><b>High Card </b> None of the above</li>
       </ol>
+      <p>
+        Ties for worst hand are broken by card ordering 2,3,4,5,6,7,8,9,10,J,Q,K,A. If there is still a tie the player 
+        using more wilds loses.
+      </p>
       
       <h2 id="setup">Setup</h2>
       <p>
@@ -161,6 +186,12 @@ export default function Rules() {
       <p>
         When a player loses their last chip, if no one else has lost their last chip they may 
         have the Beulah chip, otherwise they have lost and are out of the game.
+      </p>
+      <h2 id="wilds">Wilds</h2>
+      <p>
+        Following the first round the number of chips in the middle determines the wild card. One chip makes Aces wild, two chips 
+        makes twos wild, and so on up to 13 chips which makes kings wild. After 13 chips this cycles back to Aces at 14 chips, twos 
+        at 15 and so on.
       </p>
     </div>
   );
