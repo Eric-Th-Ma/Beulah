@@ -3,6 +3,7 @@
 export const Suits = ["S", "C", "D", "H"];
 
 export const Ranks = [
+  "2",
   "3",
   "4",
   "5",
@@ -15,7 +16,6 @@ export const Ranks = [
   "Q",
   "K",
   "A",
-  "2",
 ];
 
 export const Combinations = {
