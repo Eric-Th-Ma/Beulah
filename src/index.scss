@@ -130,6 +130,10 @@ code {
 
 /* board related */
 
+.announcement {
+  padding: 0.25em;
+}
+
 .center-container {
   display: flex;
   justify-content: center;
@@ -187,6 +191,11 @@ code {
 .player-summary {
   @extend .player-area;
   padding: 1em;
+}
+
+.status-info {
+  @extend .current-player-area;
+  padding: 0.25em;
 }
 
 /* internal player area related*/

@@ -26,13 +26,22 @@ export default class GameArea extends Component {
       </div>
     ) : (
       <div key="center" className="round-type">
+        <div key="status-info" className="status-info">
         {chips}
         {this.props.gameMetadata.map(playerData => 
           !this.props.G.end ? 
             (playerData.id==this.props.ctx.currentPlayer ? 
-            <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
-            null) : 
-            (this.props.G.chipsLeft[playerData.id] > 0 ?
+            <div className="announcement" key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
+            (playerData.id==this.props.G.knock ? 
+            <div key={playerData.id} className="announcement">{playerData.name} Knocked</div> : 
+            null)) : null
+          )
+        }
+        </div>
+        {this.props.G.end ? 
+        <div>
+        {this.props.gameMetadata.map(playerData =>
+          (this.props.G.chipsLeft[playerData.id] > 0 ?
             <div key={playerData.id} className="player-summary">
               <div>
                 <div className="left">{playerData.name}&apos;s hand</div>
@@ -52,10 +61,7 @@ export default class GameArea extends Component {
               setList={this.props.moves.relocateCards}
               clickSwap={(a,b,c,d)=>[a,b,c,d]}
               />
-            </div> : null)
-          )
-        }
-        {this.props.G.end ? <div>Center:</div> : null}
+            </div> : null))}<div>Center:</div></div> : null}
         <CardArea
           className="center"
           group="center"
