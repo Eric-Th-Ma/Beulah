@@ -18,5 +18,5 @@ Card.propTypes = {
   rank: PropTypes.string,
   suit: PropTypes.string,
   concealed: PropTypes.bool,
-  clickSwap: PropTypes.func,
+  clickSwap: PropTypes.func.isRequired,
 };

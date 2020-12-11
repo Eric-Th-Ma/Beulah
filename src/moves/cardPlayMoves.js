@@ -71,14 +71,11 @@ function nextGame(G, ctx, loser) {
   }
   G.middleChips = G.middleChips - G.chipsLeft[loser]
   if (G.chipsLeft[loser]==0) {
-    let beulahChip = true;
-    for (let i = 0; i < G.chipsLeft.length; i++) {
-      if (G.chipsLeft[i] == 0 && i != loser) {
-        beulahChip = false;
-      }
-    }
-    if (beulahChip) {
+    if (G.beulahChip) {
       G.chipsLeft[loser] = G.chipsLeft[loser]+1;
+      G.beulahChip = false;
+    } else {
+      G.turnOrder = G.turnOrder.map(x => loser==x ? null : x);
     }
   }
   let centerCards;
@@ -144,13 +141,13 @@ function countLosers(loseMat) {
 function nextTurn(G, ctx) {
   let currentPlayer = parseInt(ctx.currentPlayer);
   let nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
-  if (nextPlayer == G.knock || G.consecPasses == ctx.numPlayers) {
+  if (nextPlayer == G.knock || G.consecPasses == G.turnOrder.length) {
     G.end = true;
   }
   if (nextPlayer == G.firstPlayer) {
     G.roundType=""
   }
-  //let removeNulls = G.turnOrder.filter(x => x !== null); ERIC
+  G.turnOrder.filter(x => x !== null);
   /*
   if (nextPlayer === "W" && removeNulls.length !== 1) {
     // next player has already won, more players left in turn order

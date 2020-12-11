@@ -57,6 +57,13 @@ export default class PlayerArea extends Component {
         /> : null)}
       </div>
     );
+    if (this.props.G.turnOrder[playerID] === null) {
+      return (
+        <div className={getClassName(this.props, playerID, "player-area")}>
+          {playerArea}
+        </div>
+      );
+    }
     playerArea.push(
       <div className="center-container" key="stagingArea">
         <CardArea

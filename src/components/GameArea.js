@@ -81,20 +81,27 @@ export default class GameArea extends Component {
                     (playerData.id==this.props.ctx.currentPlayer ? 
                     <div key={playerData.id}>It is {playerData.name}&apos;s turn</div> : 
                     null) : 
-                  <div key={playerData.id}>{playerData.name}&apos;s hand
-                    <CardArea
-                    className="center"
-                    cards={this.props.G.players[parseInt(playerData.id)].hand}
-                    setList={this.props.moves.relocateCards}
-                    />
-                    <button
-                      className="button"
-                      key="pickLoser"
-                      onClick={() => this.props.moves.pickLoser(parseInt(this.props.playerID), parseInt(playerData.id))}
-                    >
-                      {playerData.name} lost
-                    </button>
-                  </div>)}
+                    (this.props.G.chipsLeft[playerData.id] > 0 ?
+                    <div key={playerData.id} className="player-summary">
+                      <div>
+                        <div className="left">{playerData.name}&apos;s hand</div>
+                        <button
+                          className="inline-button"
+                          key="pickLoser"
+                          onClick={() => this.props.moves.pickLoser(parseInt(this.props.playerID), parseInt(playerData.id))}
+                        >
+                          {playerData.name} Lost
+                        </button>
+                      </div>
+                      <CardArea
+                      className="center"
+                      cards={this.props.G.players[parseInt(playerData.id)].hand}
+                      setList={this.props.moves.relocateCards}
+                      clickSwap={(a,b,c,d)=>[a,b,c,d]}
+                      />
+                    </div> : null)
+                  )
+                }
                 {this.props.G.end ? <div>Center:</div> : null}
                 <CardArea
                   className="center"

@@ -34,6 +34,14 @@ const TienLen = {
       currentPlayer: { stage: Stage.NULL },
       others: { stage: "notTurn" },
     },
+    /*onBegin: (G, ctx) => {
+      const chipsLeft = G.chipsLeft;
+      console.log(chipsLeft[ctx.currentPlayer]);
+      if (chipsLeft[ctx.currentPlayer]==0) {
+        console.log("yes");
+        this.moves.passTurn(G, ctx);
+      }
+    },*/
   },
   //playerView: PlayerView.STRIP_SECRETS,
   phases: {
@@ -44,6 +52,13 @@ const TienLen = {
         G.firstPlayer = (G.firstPlayer+1)%ctx.numPlayers;
       },
       next: "not-in-round",
+      /*onBegin: (G, ctx) => {
+        const chipsLeft = G.chipsLeft;
+        console.log(chipsLeft[ctx.currentPlayer]);
+        if (chipsLeft[ctx.currentPlayer]==0) {
+          this.moves.passTurn();
+        }
+      },*/
     },
     "not-in-round": {
       endIf: G => {if (!G.end){return true;}},
@@ -52,6 +67,23 @@ const TienLen = {
       },
       next: "in-round",
     },
+  },
+  endIf: G => {
+    const chips = G.chipsLeft;
+    let winner = -1;
+    for (let i=1; i<=chips.length; i++) {
+      if (chips[(i-1)]>0) {
+        if (winner == -1) {
+          winner = i;
+        } else {
+          winner = null;
+        }
+      }
+    }
+    if (winner != null) {
+      console.log(chips);
+    }
+    return winner;
   },
   minPlayers: 1,
   maxPlayers: 9,
@@ -96,9 +128,10 @@ const deal = (ctx) => {
 }
 
 const chipsLeftFunc = (numberPlayers) => {
-  let returnCardsLeft = {};
+  let returnCardsLeft = [];
   for (let num of [...Array(numberPlayers).keys()]) {
-    returnCardsLeft[num] = 3;
+    returnCardsLeft.push(3);
+    returnCardsLeft[num] = 1;//3; ERIC
   }
   return returnCardsLeft;
 }
@@ -114,6 +147,7 @@ function setUp(ctx) {
     players: players,
     knock: -1,
     end: false,
+    beulahChip: true,
     roundType: "Opening Round",
     consecPasses: 0,
     //winners: [],

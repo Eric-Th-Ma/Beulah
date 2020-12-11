@@ -184,6 +184,11 @@ code {
   background-color: $orange;
 }
 
+.player-summary {
+  @extend .player-area;
+  padding: 1em;
+}
+
 /* internal player area related*/
 
 .staging-area {
@@ -267,6 +272,15 @@ button {
   font-weight: bold;
   border-radius: 1em;
   border: 0.25em solid $yellow;
+}
+
+.inline-button {
+  display: inline-block;
+  margin-left: calc(30% - 2em);
+}
+
+.left {
+  display: inline-block;
 }
 
 .tien-len {
