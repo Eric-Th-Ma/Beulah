@@ -27,7 +27,13 @@ export default function CardArea({
       disabled={false}
     >
       {cards.map(card => (
-        <Card rank={card.rank} suit={card.suit} key={card.rank + card.suit} concealed={x} clickSwap={() => clickSwap(card, listName, group)}/>
+        <Card 
+          rank={card.rank} 
+          suit={card.suit} 
+          key={card.rank + card.suit} 
+          concealed={x} 
+          clickSwap={() => clickSwap(card, listName, group)}
+        />
       ))}
     </ReactSortable>
   );

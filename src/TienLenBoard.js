@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 import GameArea from "./components/GameArea";
 import PlayerArea from "./components/PlayerArea";
+import MoveHistory from "./components/MoveHistory";
 
 class TienLenBoard extends Component {
   render() {
@@ -12,6 +13,7 @@ class TienLenBoard extends Component {
       <div className="game">
         <GameArea {...this.props} />
         <PlayerArea {...this.props} />
+        <MoveHistory {...this.props} />
       </div>
     );
   }
