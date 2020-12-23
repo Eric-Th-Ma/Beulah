@@ -188,6 +188,11 @@ code {
   background-color: $orange;
 }
 
+.old-player-summary {
+  @extend .passed-player-area;
+  padding: 1em;
+}
+
 .player-summary {
   @extend .player-area;
   padding: 1em;
