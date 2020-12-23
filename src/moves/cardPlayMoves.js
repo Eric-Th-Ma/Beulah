@@ -18,6 +18,7 @@ export function cardsToCenter(G, ctx) {
   const currentPlayer = ctx.currentPlayer;
   let stagingBackArea = G.players[currentPlayer].stagingBackArea;
   let stagingArea = G.players[currentPlayer].stagingArea;
+  G.moveHistory.push(([currentPlayer,"swap",stagingArea,stagingBackArea]));
   G.roundType=""
 
   G.center = G.center.concat(stagingArea);
@@ -41,12 +42,14 @@ export function passTurn(G, ctx) {
   if (G.roundType !== "Opening Round") {
     G.consecPasses = G.consecPasses + 1;
   }
+  G.moveHistory.push(([ctx.currentPlayer,"pass",null,null]));
   nextTurn(G, ctx);
 }
 
 export function knockTurn(G, ctx) {
   G.knock = ctx.currentPlayer;
   G.consecPasses = 0;
+  G.moveHistory.push(([ctx.currentPlayer,"knock",null,null]));
   nextTurn(G, ctx);
 }
 
@@ -86,7 +89,8 @@ function nextGame(G, ctx, loser) {
   G.end = false;
   G.roundType = "Opening Round";
   G.consecPasses = 0;
-  G.loserMatrix = loserMatrix(ctx.numPlayers)
+  G.loserMatrix = loserMatrix(ctx.numPlayers);
+  G.moveHistory = [];
 }
 
 const loserMatrix = (numberPlayers) => {

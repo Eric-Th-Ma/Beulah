@@ -135,7 +135,7 @@ function setUp(ctx) {
     beulahChip: true,
     roundType: "Opening Round",
     consecPasses: 0,
-    //winners: [],
+    moveHistory: [],
     firstPlayer: 0,
     chipsLeft: chipsLeftFunc(ctx.numPlayers),
     loserMatrix: loserMatrix(ctx.numPlayers),
