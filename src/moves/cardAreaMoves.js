@@ -9,30 +9,32 @@ export function relocateCards(G, ctx, cards, source) {
 export function clickSwap(G, ctx, card, source, group) {
   const players = G.players;
   const playerID = ctx.playerID;
-  const remove = (array, card) => {
-    let index = -1;
-    for (let i = 0; i < array.length; i++) {
-      if (array[i].rank == card.rank && array[i].suit == card.suit){
-        index = i;
+  if (playerID==ctx.currentPlayer) {
+    const remove = (array, card) => {
+      let index = -1;
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].rank == card.rank && array[i].suit == card.suit){
+          index = i;
+        }
       }
+      if (index > -1) {
+        array.splice(index, 1);
+      }
+      return array;
     }
-    if (index > -1) {
-      array.splice(index, 1);
-    }
-    return array;
-  }
-  if (group=="center") {
-    if (source=="centerCards") {
-      G.center = remove(G.center, card);
-      players[playerID]["stagingBackArea"] = players[playerID]["stagingBackArea"].concat([card]);
+    if (group=="center") {
+      if (source=="centerCards") {
+        G.center = remove(G.center, card);
+        players[playerID]["stagingBackArea"] = players[playerID]["stagingBackArea"].concat([card]);
+      } else {
+        players[playerID][source] = remove(players[playerID][source], card);
+        G.center = G.center.concat([card]);
+      } 
     } else {
+      const inSource = source=="hand" ? "stagingArea" : "hand";
       players[playerID][source] = remove(players[playerID][source], card);
-      G.center = G.center.concat([card]);
-    } 
-  } else {
-    const inSource = source=="hand" ? "stagingArea" : "hand";
-    players[playerID][source] = remove(players[playerID][source], card);
-    players[playerID][inSource] = players[playerID][inSource].concat([card]);
+      players[playerID][inSource] = players[playerID][inSource].concat([card]);
+    }
   }
 }
 
