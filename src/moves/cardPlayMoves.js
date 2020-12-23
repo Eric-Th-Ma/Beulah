@@ -86,11 +86,11 @@ function nextGame(G, ctx, loser) {
   G.center = centerCards;
   G.players = players;
   G.knock = -1;
-  G.end = false;
   G.roundType = "Opening Round";
   G.consecPasses = 0;
   G.loserMatrix = loserMatrix(ctx.numPlayers);
   G.moveHistory = [];
+  G.end = false;
 }
 
 const loserMatrix = (numberPlayers) => {

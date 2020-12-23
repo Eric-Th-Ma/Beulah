@@ -51,6 +51,9 @@ const TienLen = {
     "not-in-round": {
       endIf: G => {if (!G.end){return true;}},
       onEnd: (G, ctx) => {
+        while (G.turnOrder[G.firstPlayer]===null) {
+          G.firstPlayer = (G.firstPlayer+1)%ctx.numPlayers;
+        }
         ctx.currentPlayer=G.firstPlayer.toString();
       },
       next: "in-round",
