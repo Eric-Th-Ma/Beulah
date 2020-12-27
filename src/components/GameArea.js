@@ -25,7 +25,13 @@ export default class GameArea extends Component {
         } Wins!
       </div>
     ) : (
-      <div key="center" className="round-type">
+      <div key="center" className="round-type" onClick={()=>{
+          //this.props.updateCredentials("GHjfhp-kC");
+          console.log(this.props.credentials);
+          console.log(this.props.isActive);
+          console.log(this.props.G);
+          console.log(this.props.gameMetadata);
+        }}>
         <div key="status-info" className="status-info">
         {chips}
         {this.props.gameMetadata.map(playerData => 
@@ -88,5 +94,7 @@ GameArea.propTypes = {
   ctx: PropTypes.object,
   moves: PropTypes.object,
   playerID: PropTypes.string,
+  credentials: PropTypes.string,
+  isActive: PropTypes.bool,
   gameMetadata: PropTypes.array,
 };

@@ -64,6 +64,16 @@ export function pickLoser(G, ctx, picker, picked) {
   }
 }
 
+export function handleOverride(G, ctx, overrideText) {
+  for (let overrideLine of overrideText.split(/\r?\n/)) {
+    if (overrideLine.length==4 && overrideLine.substring(1,3)=="->") {
+      G.chipsLeft[parseInt(overrideLine.substring(0,1))]=parseInt(overrideLine.substring(3,4));
+    } else if (overrideLine=="end") {
+      G.override=[-1,0]
+    }
+  }
+}
+
 function nextGame(G, ctx, loser) {
   G.middleChips = G.middleChips + G.chipsLeft[loser]
   if (loser==G.knock) {

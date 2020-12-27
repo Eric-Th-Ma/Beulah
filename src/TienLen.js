@@ -2,10 +2,21 @@
 
 import { /*PlayerView,*/ Stage } from "boardgame.io/core";
 import { Suits, Ranks, /*Combinations*/ } from "./constants";
-import { cardsToCenter, passTurn, knockTurn, pickLoser } from "./moves/cardPlayMoves";
+import { cardsToCenter, passTurn, knockTurn, pickLoser, handleOverride } from "./moves/cardPlayMoves";
 import { clickSwap, relocateCards, relocateMiddleCards, clearStagingArea, fillStagingArea } from "./moves/cardAreaMoves";
 import { compareCards } from "./moves/helper-functions/cardComparison";
 const _ = require("lodash");
+
+function overrideRequest(G, ctx, id) {
+  if (G.override[0]==-1) {
+    G.override[0]=id;
+  } else if (G.override[0]==id) {
+    G.override[0]=-1;
+    G.override[1]=0
+  } else {
+    G.override[1]=G.override[1]+1;
+  }
+}
 
 const TienLen = {
   name: "Beulah",
@@ -20,10 +31,12 @@ const TienLen = {
     passTurn: passTurn,
     knockTurn: knockTurn,
     pickLoser: pickLoser,
+    overrideRequest: overrideRequest,
+    handleOverride: handleOverride,
   },
   stages: {
     notTurn: {
-      moves: { relocateCards, clickSwap, relocateMiddleCards, clearStagingArea, fillStagingArea, pickLoser},
+      moves: { relocateCards, clickSwap, relocateMiddleCards, clearStagingArea, fillStagingArea, pickLoser, overrideRequest, handleOverride},
     },
   },
   turn: {
@@ -143,6 +156,7 @@ function setUp(ctx) {
     chipsLeft: chipsLeftFunc(ctx.numPlayers),
     loserMatrix: loserMatrix(ctx.numPlayers),
     middleChips: 0,
+    override: [-1, 0],
   };
 }
 

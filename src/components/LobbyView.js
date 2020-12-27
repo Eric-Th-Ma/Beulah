@@ -18,7 +18,7 @@ import "./lobby.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 GameTienLen.minPlayers = 2;
-GameTienLen.maxPlayers = 9;// ERIC. change back to 4
+GameTienLen.maxPlayers = 9;
 
 const { protocol, hostname, port } = window.location;
 
