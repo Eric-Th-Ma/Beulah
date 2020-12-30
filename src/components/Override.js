@@ -59,7 +59,9 @@ LastMove.propTypes = {
 export default class Override extends Component {
   constructor(props) {
     super(props);
-    this.state = {approved: false, value: ""};
+    this.state = {
+      approved: false, 
+      value: "To set the number of chips for any player enter: \"PLAYER_#->#_OF_CHIPS\"\nTo set the number of chips in the middle enter: \"m->#_OF_CHIPS\"\nTo pass for the current player enter: \"pass\"\nTo end override mode enter: \"end\"\n"};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
