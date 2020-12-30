@@ -68,12 +68,20 @@ export function handleOverride(G, ctx, overrideText) {
   for (let overrideLine of overrideText.split(/\r?\n/)) {
     if (overrideLine.length==4 && overrideLine.substring(1,3)=="->") {
       if (overrideLine.substring(0,1)=="m") {
-        G.middleChips=G.middleChips+parseInt(overrideLine.substring(3,4));
+        G.middleChips=parseInt(overrideLine.substring(3,4));
       } else {
         G.chipsLeft[parseInt(overrideLine.substring(0,1))]=parseInt(overrideLine.substring(3,4));
       }
+    } else if (overrideLine.length==5 && overrideLine.substring(0,3)=="m->") {
+      G.middleChips=parseInt(overrideLine.substring(3,5));
     } else if (overrideLine=="end") {
-      G.override=[-1,0]
+      G.override=[-1,0];
+    } else if (overrideLine=="pass") {
+      passTurn(G, ctx);
+    } else if (overrideLine=="reset-losers") {
+      for (let i = 0; i < G.turnOrder.length; i++) {
+        G.turnOrder[i] = G.chipsLeft[i]<=0 ? null : i;
+      }
     }
   }
 }
