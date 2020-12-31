@@ -1,4 +1,4 @@
-// src/Card.js
+// src/Chips.js
 import React from "react";
 
 const requestImageFile = require.context("../assets/other", true, /.png$/);
