@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { validPlay } from "../moves/cardPlayMoves";
 
-//const _ = require("lodash");
-
 export default function Buttons(props) {
   const currentPlayer = props.ctx.currentPlayer === props.playerID;
   let buttons1 = [];
@@ -63,10 +61,6 @@ function playCardsButton(props) {
   const playerID = props.playerID;
   let stagingArea = props.G.players[playerID].stagingArea;
   let stagingBackArea = props.G.players[playerID].stagingBackArea;
-  /*let threeSpadesInHand = _.find(props.G.players[playerID].hand, {
-    rank: "3",
-    suit: "S",
-  });*/
   const p = validPlay(
     stagingArea,
     stagingBackArea,

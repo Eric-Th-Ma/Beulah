@@ -1,60 +1,6 @@
 // src/components/GameArea.js
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-//import { getClassName } from "./_helperFunctions";
-import Card from "./Card";
-//import Chip from "./Chip";
-//import PlayerStatus from "./PlayerStatus";
-
-function OldMove({move, player}) {
-  let message;
-  if (move[1] !== "swap") {
-    message = `${player[0].name} ${move[1]}ed.`;
-  } else if (move[2].length > 1) {
-    message = `${player[0].name} swapped their entire hand with the middle.`;
-  } else {
-    message = `${player[0].name} swapped one card with the middle.`
-  }
-  return (<div className="old-player-summary" key={player[0].name}>{message}</div>)
-}
-
-OldMove.propTypes = {
-  move: PropTypes.array,
-  player: PropTypes.array,
-};
-
-function LastMove({move, player}) {
-  let message;
-  if (move[1] !== "swap") {
-    message = `${player[0].name} ${move[1]}ed.`;
-  } else if (move[2].length > 1) {
-    message = `${player[0].name} swapped their entire hand with the middle.`;
-  } else {
-    const cardIn = move[2][0];
-    const cardOut = move[3][0];
-    message = <div>
-      {player[0].name} swapped    <Card 
-        rank={cardIn.rank} 
-        suit={cardIn.suit} 
-        key={cardIn.rank + cardIn.suit} 
-        concealed={false} 
-        clickSwap={() => null}
-      />    to the middle for    <Card 
-        rank={cardOut.rank} 
-        suit={cardOut.suit} 
-        key={cardOut.rank + cardOut.suit} 
-        concealed={false} 
-        clickSwap={() => null}
-      />.
-    </div>;
-  }
-  return (<div className="player-summary" key={player[0].name}>{message}</div>)
-}
-
-LastMove.propTypes = {
-  move: PropTypes.array,
-  player: PropTypes.array,
-};
 
 export default class Override extends Component {
   constructor(props) {

@@ -1,10 +1,8 @@
 // src/components/GameArea.js
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-//import { getClassName } from "./_helperFunctions";
 import CardArea from "./CardArea";
 import CenterChips from "./CenterChips";
-//import PlayerStatus from "./PlayerStatus";
 
 export default class GameArea extends Component {
   render() {
@@ -20,13 +18,7 @@ export default class GameArea extends Component {
         } Wins!
       </div>
     ) : (
-      <div key="center" className="round-type" onClick={()=>{
-          //this.props.updateCredentials("GHjfhp-kC");
-          console.log(this.props.credentials);
-          console.log(this.props.isActive);
-          console.log(this.props.G);
-          console.log(this.props.gameMetadata);
-        }}>
+      <div key="center" className="round-type">
         <div key="status-info" className="status-info">
         <CenterChips middleChips={this.props.G.middleChips}/>
         {this.props.gameMetadata.map(playerData => 

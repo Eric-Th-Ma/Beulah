@@ -1,10 +1,7 @@
 // src/components/GameArea.js
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-//import { getClassName } from "./_helperFunctions";
 import Card from "./Card";
-//import Chip from "./Chip";
-//import PlayerStatus from "./PlayerStatus";
 
 function OldMove({move, player}) {
   let message;
@@ -33,13 +30,15 @@ function LastMove({move, player}) {
     const cardIn = move[2][0];
     const cardOut = move[3][0];
     message = <div>
-      {player[0].name} swapped    <Card 
+      {player[0].name} swapped    
+      <Card 
         rank={cardIn.rank} 
         suit={cardIn.suit} 
         key={cardIn.rank + cardIn.suit} 
         concealed={false} 
         clickSwap={() => null}
-      />    to the middle for    <Card 
+      />    to the middle for    
+      <Card 
         rank={cardOut.rank} 
         suit={cardOut.suit} 
         key={cardOut.rank + cardOut.suit} 
