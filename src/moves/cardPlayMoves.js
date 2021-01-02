@@ -1,5 +1,5 @@
 // src/moves/cardPlayMoves.js
-import { Suits, Ranks, /*Combinations*/ } from "../constants";
+import { Suits, Ranks } from "../constants";
 import { compareCards } from "../moves/helper-functions/cardComparison";
 
 const _ = require("lodash");
@@ -26,19 +26,10 @@ export function cardsToCenter(G, ctx) {
   G.players[currentPlayer].stagingBackArea = [];
   G.players[currentPlayer].stagingArea = [];
   G.consecPasses = 0;
-  //G.cardsLeft[currentPlayer] -= G.center.length;
-  /*if (G.cardsLeft[currentPlayer] === 0) {
-    // won the game
-    G.winners.push(currentPlayer);
-    // get rid of any existing winner markers
-    G.turnOrder = G.turnOrder.map(x => (x === "W" ? null : x));
-    G.turnOrder[parseInt(ctx.currentPlayer)] = "W";
-  }*/
   nextTurn(G, ctx);
 }
 
 export function passTurn(G, ctx) {
-  //G.turnOrder[parseInt(ctx.currentPlayer)] = null;
   if (G.roundType !== "Opening Round") {
     G.consecPasses = G.consecPasses + 1;
   }
@@ -172,29 +163,7 @@ function nextTurn(G, ctx) {
   if (nextPlayer == G.firstPlayer) {
     G.roundType=""
   }
-  /*
-  if (nextPlayer === "W" && removeNulls.length !== 1) {
-    // next player has already won, more players left in turn order
-    // need to remove winning "W" marker
-    G.turnOrder = G.turnOrder.map(x => (x === "W" ? null : x));
-    nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
-    removeNulls = G.turnOrder.filter(x => x !== null);
-  } else if (nextPlayer === "W" && removeNulls.length === 1) {
-    // next player has already won, no more players left in turn order
-    // need to pass free play to player after "W"
-
-    // remove winners from turn order
-    /*G.turnOrder = [0, 1, 2, 3].map(x =>
-      G.winners.includes(x.toString()) ? null : x
-    );
-    G.roundType = Combinations.ANY;
-
-    // find player after winner
-    currentPlayer = parseInt(G.winners[G.winners.length - 1]);
-    nextPlayer = findNextPlayer(G.turnOrder, currentPlayer);
-  }*/
   ctx.events.endTurn({ next: nextPlayer });
-  //removeNulls = G.turnOrder.filter(x => x !== null); ERIC
 }
 
 function findNextPlayer(turnOrder, currentPlayer) {
