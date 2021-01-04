@@ -69,7 +69,7 @@ export function handleOverride(G, ctx, overrideText) {
       G.override=[-1,0];
     } else if (overrideLine=="pass") {
       passTurn(G, ctx);
-    } else if (overrideLine=="reset-losers") {
+    } else if (overrideLine=="r-l") {
       for (let i = 0; i < G.turnOrder.length; i++) {
         G.turnOrder[i] = G.chipsLeft[i]<=0 ? null : i;
       }
